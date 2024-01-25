@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "2D Multi-Body Dynamics.sln"
+    "dotnet.defaultSolution": "Multi-Body Dynamics.sln"
 }
