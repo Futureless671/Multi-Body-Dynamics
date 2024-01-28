@@ -167,14 +167,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6934c76cad2f74b8030aa67cea3879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bodies:
+  Bodies:
   - {fileID: 6943246279310385096, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
   - {fileID: 6164697417977266173, guid: d7e40ca9dc245e5438ee71e514a3b71f, type: 3}
-  ScaleFactor: 0.00000001
-  TimeScale: 100000
-  PrimaryBody: {fileID: 0}
   realbodies: []
+  ScaleFactor: 0.00000001
+  TimeScale: 20
+  PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
+  time: 0
+  play: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
