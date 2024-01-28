@@ -172,11 +172,13 @@ MonoBehaviour:
   - {fileID: 6164697417977266173, guid: d7e40ca9dc245e5438ee71e514a3b71f, type: 3}
   realbodies: []
   ScaleFactor: 0.00000001
-  TimeScale: 20
+  bodyscaleweight: 0
+  TimeScale: 1
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0
   play: 0
+  InertialFoR: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

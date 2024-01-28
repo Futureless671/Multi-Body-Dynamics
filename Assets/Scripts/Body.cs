@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -19,6 +20,7 @@ public class Body : MonoBehaviour
     public Body PrimaryBody;
     public Body ParentBodyOverride;
     private bool primbodycheck;
+    public float radialscale;
     //=================================================
     //=========== Physical Input Parameters ===========
     //=================================================
@@ -46,6 +48,7 @@ public class Body : MonoBehaviour
 
     void Awake()
     {
+        radialscale=1;
         primbodycheck = false;
         controller = FindObjectOfType<SimController>();
         PrimaryBody = controller.PrimaryBody;
@@ -76,25 +79,39 @@ public class Body : MonoBehaviour
             epsilon = 0.5f*v_i.magnitude*v_i.magnitude - mu/r_i;
             a = -mu/(2f*epsilon);
             e = Mathf.Sqrt(1-(p/a));
-            transform.localScale = new Vector3(1,1,1)*radius/PrimaryBody.radius;
         }
     }
 
     void calcposition()
     {
-        r = p/(1+e*Mathf.Cos(Mathf.Deg2Rad*f))*controller.ScaleFactor;
+        float M = Mathf.Sqrt(mu/(a*a*a))*controller.time;
+        float Ei = M;
+        float E = M;
+        for(int i = 0; i<6; i++)
+        {
+            Ei = E;
+            float numerator = Ei - e*Mathf.Sin(Ei) - M;
+            float denomninator = 1 - e*Mathf.Cos(Ei);
+            E = Ei - numerator/denomninator;
+        }
+        float num = 1+e;
+        float den = 1-e;
+        float term = Mathf.Sqrt(num/den)*Mathf.Tan(E/2);
+        f = Mathf.Rad2Deg*2*Mathf.Atan(term);
+        //r = p/(1+e*Mathf.Cos(f))*controller.ScaleFactor;
+        r = a*(1-e*Mathf.Cos(E))*controller.ScaleFactor;
     }
 
-    void FixedUpdate()
+    void Update()
     {
+        transform.localScale = Vector3.Lerp(new Vector3(1,1,1)*radius/PrimaryBody.radius,new Vector3(1,1,1),controller.bodyscaleweight);
+        calcposition();
         if(primbodycheck)
         {
             transform.position = new Vector3(0.0f,0.0f,0.0f);
         }
         else
         {
-            f = controller.time;
-            calcposition();
             if(ParentBodyOverride==null)
             {
                 transform.position = controller.polartocartesian(r, f);
@@ -106,5 +123,4 @@ public class Body : MonoBehaviour
             
         }
     }
-
 }

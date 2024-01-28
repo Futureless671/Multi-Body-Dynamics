@@ -9,12 +9,13 @@ public class SimController : MonoBehaviour
     public List<Body> Bodies = new List<Body>{};
     public List<Body> realbodies = new List<Body>{};
     public float ScaleFactor;
+    public float bodyscaleweight;
     public float TimeScale;
     public Body PrimaryBody;
     public float UGC = (float)6.674*Mathf.Pow(10,-11);
     public float time;
     public bool play;
-    public TimeSpan test;
+    public Body InertialFoR;
     public Vector3 polartocartesian(float r, float f)
     {
         return new Vector3(r*Mathf.Cos(Mathf.Deg2Rad*f),r*Mathf.Sin(Mathf.Deg2Rad*f),0);
@@ -42,7 +43,7 @@ public class SimController : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if(play==true)
         {
