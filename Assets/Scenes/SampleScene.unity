@@ -168,8 +168,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bodies:
-  - {fileID: 6943246279310385096, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
-  - {fileID: 6164697417977266173, guid: d7e40ca9dc245e5438ee71e514a3b71f, type: 3}
+  - {fileID: 2418742559767410224, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
+  - {fileID: 3257191939382564352, guid: d7e40ca9dc245e5438ee71e514a3b71f, type: 3}
+  - {fileID: 648517125095974894, guid: a331bf2281986e248b85e9e5aba375ce, type: 3}
   realbodies: []
   ScaleFactor: 0.00000001
   bodyscaleweight: 0
@@ -239,7 +240,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:

@@ -20,7 +20,10 @@ public class Body : MonoBehaviour
     public Body PrimaryBody;
     public Body ParentBodyOverride;
     private bool primbodycheck;
-    public float radialscale;
+    public float radialscale = 1;
+    private GameObject SOI;
+    public float SOI_radius;
+    public float BodyScale;
     //=================================================
     //=========== Physical Input Parameters ===========
     //=================================================
@@ -37,7 +40,9 @@ public class Body : MonoBehaviour
     //============= Calculated Parameters =============
     //=================================================
     private float r;
+    //[HideInInspector]
     public float f;
+    [HideInInspector]
     public Vector3 v;
     private float a;
     private Vector3 h;
@@ -48,7 +53,7 @@ public class Body : MonoBehaviour
 
     void Awake()
     {
-        radialscale=1;
+        SOI = transform.GetChild(0).gameObject;
         primbodycheck = false;
         controller = FindObjectOfType<SimController>();
         PrimaryBody = controller.PrimaryBody;
@@ -67,6 +72,7 @@ public class Body : MonoBehaviour
         gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(Color.white, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.8f), new GradientAlphaKey(0.0f, 1.0f)});
         trail.colorGradient = gradient;
         trail.enabled = true;
+        BodyScale = Mathf.Sqrt(PrimaryBody.radius*radius)/PrimaryBody.radius;
 
         if(primbodycheck==false)
         {
@@ -79,6 +85,7 @@ public class Body : MonoBehaviour
             epsilon = 0.5f*v_i.magnitude*v_i.magnitude - mu/r_i;
             a = -mu/(2f*epsilon);
             e = Mathf.Sqrt(1-(p/a));
+            SOI_radius = a*Mathf.Pow(mass/PrimaryBody.mass,2/5)*radius/PrimaryBody.radius;
         }
     }
 
@@ -97,14 +104,15 @@ public class Body : MonoBehaviour
         float num = 1+e;
         float den = 1-e;
         float term = Mathf.Sqrt(num/den)*Mathf.Tan(E/2);
-        f = Mathf.Rad2Deg*2*Mathf.Atan(term);
-        //r = p/(1+e*Mathf.Cos(f))*controller.ScaleFactor;
-        r = a*(1-e*Mathf.Cos(E))*controller.ScaleFactor;
+        f = Mathf.Abs(Mathf.Rad2Deg*2*Mathf.Atan(term));
+        print(Name + f);
+        r = a*(1-e*Mathf.Cos(E));
     }
 
     void Update()
     {
-        transform.localScale = Vector3.Lerp(new Vector3(1,1,1)*radius/PrimaryBody.radius,new Vector3(1,1,1),controller.bodyscaleweight);
+        SOI.transform.localScale = new Vector3(1,1,1)*SOI_radius*controller.ScaleFactor;
+        transform.localScale = new Vector3(1,1,1)*BodyScale;
         calcposition();
         if(primbodycheck)
         {
@@ -114,11 +122,11 @@ public class Body : MonoBehaviour
         {
             if(ParentBodyOverride==null)
             {
-                transform.position = controller.polartocartesian(r, f);
+                transform.position = controller.polartocartesian(r, f)*controller.ScaleFactor;
             }
             else
             {
-                transform.position = controller.polartocartesian(r, f) + ParentBodyOverride.transform.position;
+                transform.position = controller.polartocartesian(r, f)*controller.ScaleFactor + ParentBodyOverride.transform.position;
             }
             
         }
