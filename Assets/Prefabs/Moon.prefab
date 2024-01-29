@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.4862745}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.039215688}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -302,6 +302,7 @@ MonoBehaviour:
   ParentBodyOverride: {fileID: 0}
   radialscale: 1
   SOI_radius: 0
+  BodyScale: 0
   mass: 7.346e+22
   radius: 1738100
   r_i: 363300000

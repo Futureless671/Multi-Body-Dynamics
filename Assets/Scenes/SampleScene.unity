@@ -149,7 +149,7 @@ Transform:
   m_GameObject: {fileID: 132521605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.083, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -167,14 +167,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6934c76cad2f74b8030aa67cea3879, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gamecam: {fileID: 519420031}
   Bodies:
   - {fileID: 2418742559767410224, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
   - {fileID: 3257191939382564352, guid: d7e40ca9dc245e5438ee71e514a3b71f, type: 3}
-  - {fileID: 648517125095974894, guid: a331bf2281986e248b85e9e5aba375ce, type: 3}
   realbodies: []
   ScaleFactor: 0.00000001
-  bodyscaleweight: 0
-  TimeScale: 1
+  BodyScale: 1
+  TimeScale: 200000
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0
@@ -240,7 +240,7 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:

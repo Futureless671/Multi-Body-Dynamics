@@ -2,14 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SimController : MonoBehaviour
 {
+    public Camera gamecam;
     public List<Body> Bodies = new List<Body>{};
     public List<Body> realbodies = new List<Body>{};
     public float ScaleFactor;
-    public float bodyscaleweight;
+    public float BodyScale = 1;
     public float TimeScale;
     public Body PrimaryBody;
     public float UGC = (float)6.674*Mathf.Pow(10,-11);
@@ -22,9 +24,9 @@ public class SimController : MonoBehaviour
     }
     void Start()
     {
+        gamecam = FindObjectOfType<Camera>();
         Body FakePrimaryBody = Bodies[0];
         float mostmassive = 0;
-        play = false;
         foreach(Body i in Bodies)
         {
             if(i.mass>mostmassive)
@@ -43,11 +45,52 @@ public class SimController : MonoBehaviour
         }
     }
 
-    void Update()
+    void adjustcamera()
+    {
+        Vector2 ScreenSize;
+        ScreenSize.x = gamecam.pixelWidth;
+        ScreenSize.y = gamecam.pixelHeight;
+        float lerpval = 0;
+        float aspect = ScreenSize.x/ScreenSize.y;
+        float MarginSize = 0.1f;
+        float MarginPixel = MarginSize*ScreenSize.y;
+        print("Y Pixel Margin: " + MarginPixel);
+        foreach(Body i in realbodies)
+        {
+            Vector2 Position = gamecam.WorldToScreenPoint(i.transform.position);
+            print(i.name + " Screen Pos: " + Position);
+            if(Position.x<MarginPixel)
+            {
+                lerpval = Mathf.Max((MarginPixel - Position.x)/MarginPixel,lerpval);
+                print("Out of Bounds");
+            }
+            else if(Position.x>ScreenSize.x-MarginPixel)
+            {
+                lerpval = Mathf.Max((Position.x - (ScreenSize.x - MarginPixel))/MarginPixel,lerpval);
+                print("Out of Bounds");
+            }
+
+            if(Position.y<MarginPixel)
+            {
+                lerpval = Mathf.Max((MarginPixel - Position.y)/MarginPixel,lerpval);
+                print("Out of Bounds");
+            }
+            else if(Position.y>ScreenSize.y-MarginPixel)
+            {
+                lerpval = Mathf.Max((Position.y - (ScreenSize.y - MarginPixel))/MarginPixel,lerpval);
+                print("Out of Bounds");
+            }
+        }
+        gamecam.orthographicSize *= Mathf.SmoothStep(1,2,lerpval);
+        print("Cam Size: " + gamecam.orthographicSize);
+    }
+
+    void FixedUpdate()
     {
         if(play==true)
         {
             time += Time.deltaTime*TimeScale;
         }
+        adjustcamera();
     }
 }
