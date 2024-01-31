@@ -171,10 +171,11 @@ MonoBehaviour:
   Bodies:
   - {fileID: 2418742559767410224, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
   - {fileID: 3257191939382564352, guid: d7e40ca9dc245e5438ee71e514a3b71f, type: 3}
+  - {fileID: 3257191939382564352, guid: 088c3abf9d18a7547bc20c73ff668e7f, type: 3}
   realbodies: []
   ScaleFactor: 0.00000001
   BodyScale: 1
-  TimeScale: 200000
+  TimeScale: 400000
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0

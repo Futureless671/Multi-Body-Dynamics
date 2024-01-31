@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4632297879660667744}
   - component: {fileID: 3257191939382564352}
   m_Layer: 0
-  m_Name: Moon
+  m_Name: Moon 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,9 +304,9 @@ MonoBehaviour:
   SOI_radius: 0
   BodyScale: 0
   mass: 7.346e+22
-  radius: 1738100
-  r_i: 363300000
+  radius: 2738100
+  r_i: 463300000
   f_i: 0
-  v_i: {x: 0, y: 1400, z: 0}
+  v_i: {x: 0, y: 1200, z: 0}
   f: 0
   v: {x: 0, y: 0, z: 0}

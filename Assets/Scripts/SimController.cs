@@ -38,11 +38,14 @@ public class SimController : MonoBehaviour
         Bodies.Remove(FakePrimaryBody);
         PrimaryBody = Instantiate(FakePrimaryBody);
         realbodies.Add(PrimaryBody);
+        float maxdist = 0;
         foreach(Body i in Bodies)
         {
             Body tmp = Instantiate(i);
             realbodies.Add(tmp);
+            maxdist = Mathf.Max(i.r_i,maxdist);
         }
+        ScaleFactor = 6/maxdist;
     }
 
     void adjustcamera()
@@ -81,7 +84,7 @@ public class SimController : MonoBehaviour
                 print("Out of Bounds");
             }
         }
-        gamecam.orthographicSize *= Mathf.SmoothStep(1,2,lerpval);
+        gamecam.orthographicSize *= Mathf.SmoothStep(1,1.01f,lerpval);
         print("Cam Size: " + gamecam.orthographicSize);
     }
 
@@ -90,7 +93,7 @@ public class SimController : MonoBehaviour
         if(play==true)
         {
             time += Time.deltaTime*TimeScale;
+            adjustcamera();
         }
-        adjustcamera();
     }
 }

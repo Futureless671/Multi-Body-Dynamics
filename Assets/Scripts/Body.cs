@@ -30,7 +30,7 @@ public class Body : MonoBehaviour
     [SerializeField]
     private float radius;
     [SerializeField]
-    private float r_i;
+    public float r_i;
     [SerializeField]
     private float f_i;
     [SerializeField]
