@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Body : MonoBehaviour
 {
@@ -49,6 +50,8 @@ public class Body : MonoBehaviour
     private float mu;
     private float epsilon;
     private float e;
+    private float orbitdir;
+    private float T;
 
     void Awake()
     {
@@ -93,12 +96,14 @@ public class Body : MonoBehaviour
     void calcparameters(float r, float f, Vector3 v)
     {
         h = Vector3.Cross(controller.polartocartesian(r, f),v); // Calculate specific angular momentum (this is constant for all points of an orbit)
+        orbitdir = Mathf.Sign(h.z); // Set Orbit Direction (this only works because the simulation is two-dimensional)
         mu = controller.UGC*(mass+PrimaryBody.mass); // Calculate gravitational constant (this is constant for all points of an orbit)
         p = h.magnitude*h.magnitude/mu; // calculate orbital parameter (position of the semi-latus rectum) (this is constant for all points of an orbit)
         epsilon = 0.5f*v.magnitude*v.magnitude - mu/r; // Calculate the orbit's specific energy (this is constant for all points of an orbit)
         a = -mu/(2f*epsilon); // calculate orbit's semi-major axis (this applies only to elliptical and hyperbolic orbits) (this is constant for all points of an orbit)
         e = Mathf.Sqrt(1-(p/a)); // calculate orbit eccentricity (this applies only to elliptical and hyperbolic orbits) (this is constant for all points of an orbit)
         SOI_radius = a*Mathf.Pow(mass/PrimaryBody.mass,2/5)*radius/PrimaryBody.radius; // calculate the radius of the orbit's sphere of influence (this applies only to elliptical orbits)
+        T = 2*3.14159265f*Mathf.Sqrt((a*a*a)/mu);
     }
 
     //=================================================
@@ -123,15 +128,15 @@ public class Body : MonoBehaviour
         float num = 1+e;
         float den = 1-e;
         float term = Mathf.Sqrt(num/den)*Mathf.Tan(E/2);
-        f = Mathf.Rad2Deg*2*Mathf.Atan(term);
+        f = orbitdir*Mathf.Rad2Deg*2*Mathf.Atan(term);
         //print(Name + f); //debug line
-        r = a*(1-e*Mathf.Cos(E)); // calculate radial position based on true anomoly
+        r = Mathf.Log(a*(1-e*Mathf.Cos(E)),5)-14.5f; // calculate radial position based on true anomoly
     }
 
     void Update()
     {
-        SOI.transform.localScale = new Vector3(1,1,1)*SOI_radius*controller.ScaleFactor; // Set relative scale of Sphere of Influence (for display)
         transform.localScale = new Vector3(1,1,1)*BodyScale*controller.BodyScale; // Set relative scale based on largest object in system
+        SOI.transform.localScale = new Vector3(1,1,1)*SOI_radius*controller.ScaleFactor; // Set relative scale of Sphere of Influence (for display)
         calcposition();
         if(primbodycheck) // Set Primary Body to 0,0,0 so it doesn't move
         {
@@ -139,7 +144,8 @@ public class Body : MonoBehaviour
         }
         else
         {
-            transform.position = controller.polartocartesian(r, f)*controller.ScaleFactor; 
+            transform.position = controller.polartocartesian(r, f);//*controller.ScaleFactor; 
         }
+        trail.time = T*controller.TrailRatio/controller.TimeScale;
     }
 }

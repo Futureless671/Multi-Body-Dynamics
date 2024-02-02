@@ -18,6 +18,7 @@ public class SimController : MonoBehaviour
     public float time;
     public bool play;
     public Body InertialFoR;
+    public float TrailRatio;
     public Vector3 polartocartesian(float r, float f)
     {
         return new Vector3(r*Mathf.Cos(Mathf.Deg2Rad*f),r*Mathf.Sin(Mathf.Deg2Rad*f),0);
@@ -57,35 +58,28 @@ public class SimController : MonoBehaviour
         float aspect = ScreenSize.x/ScreenSize.y;
         float MarginSize = 0.1f;
         float MarginPixel = MarginSize*ScreenSize.y;
-        print("Y Pixel Margin: " + MarginPixel);
         foreach(Body i in realbodies)
         {
             Vector2 Position = gamecam.WorldToScreenPoint(i.transform.position);
-            print(i.name + " Screen Pos: " + Position);
             if(Position.x<MarginPixel)
             {
                 lerpval = Mathf.Max((MarginPixel - Position.x)/MarginPixel,lerpval);
-                print("Out of Bounds");
             }
             else if(Position.x>ScreenSize.x-MarginPixel)
             {
                 lerpval = Mathf.Max((Position.x - (ScreenSize.x - MarginPixel))/MarginPixel,lerpval);
-                print("Out of Bounds");
             }
 
             if(Position.y<MarginPixel)
             {
                 lerpval = Mathf.Max((MarginPixel - Position.y)/MarginPixel,lerpval);
-                print("Out of Bounds");
             }
             else if(Position.y>ScreenSize.y-MarginPixel)
             {
                 lerpval = Mathf.Max((Position.y - (ScreenSize.y - MarginPixel))/MarginPixel,lerpval);
-                print("Out of Bounds");
             }
         }
         gamecam.orthographicSize *= Mathf.SmoothStep(1,1.01f,lerpval);
-        print("Cam Size: " + gamecam.orthographicSize);
     }
 
     void FixedUpdate()
