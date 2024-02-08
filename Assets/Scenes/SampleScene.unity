@@ -181,7 +181,7 @@ MonoBehaviour:
   realbodies: []
   ScaleFactor: 0.00000001
   BodyScale: 1
-  TimeScale: 86400
+  TimeScale: 31540000
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0
