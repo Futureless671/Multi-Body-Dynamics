@@ -181,11 +181,11 @@ MonoBehaviour:
   realbodies: []
   ScaleFactor: 0.00000001
   BodyScale: 1
-  TimeScale: 31540000
+  TimeScale: 15770000
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0
-  play: 0
+  play: 1
   InertialFoR: {fileID: 0}
   TrailRatio: 0.75
 --- !u!1 &519420028
@@ -383,7 +383,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 85, y: 15}
+  m_AnchoredPosition: {x: 85, y: 10}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1871997872
@@ -420,18 +420,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 3f0ad464760b04d4f8415e31f92cde84, type: 3}
-    m_FontSize: 25
+    m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 50
-    m_Alignment: 0
+    m_MaxSize: 300
+    m_Alignment: 6
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 1
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Time Tracker
 --- !u!222 &1871997874
 CanvasRenderer:
   m_ObjectHideFlags: 0

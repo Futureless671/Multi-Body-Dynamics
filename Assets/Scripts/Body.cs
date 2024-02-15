@@ -75,7 +75,7 @@ public class Body : MonoBehaviour
         color = new Color(color.r,color.g,color.b,1.0f); // Set color variable to color set in Body parameters
         sprite.color = color; // Set sprite color
         Gradient gradient = new Gradient(); // Initialize new gradient object
-        gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(Color.white, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.8f), new GradientAlphaKey(0.0f, 1.0f)}); // Set trail color gradient
+        gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(color, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)}); // Set trail color gradient
         trail.colorGradient = gradient; // assign trail color gradient
 
 
@@ -88,6 +88,9 @@ public class Body : MonoBehaviour
             calcparameters(r_i,f_i,v_i); // Calculate orbit parameters
         }
         trail.enabled = true;
+        trail.startWidth = 0.5f;
+        trail.endWidth = 0.01f;
+        trail.widthMultiplier = BodyScale;
     }
 
     //=================================================
