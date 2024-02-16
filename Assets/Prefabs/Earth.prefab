@@ -307,6 +307,6 @@ MonoBehaviour:
   radius: 6378137
   r_i: 1.47095e+11
   f_i: 0
-  v_i: {x: 0, y: 30290, z: 0}
+  v_i: 30290
   f: 0
   v: {x: 0, y: 0, z: 0}

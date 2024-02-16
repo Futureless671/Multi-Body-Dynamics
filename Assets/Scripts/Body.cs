@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Rendering;
 
 public class Body : MonoBehaviour
@@ -35,7 +38,7 @@ public class Body : MonoBehaviour
     [SerializeField]
     private float f_i;
     [SerializeField]
-    private Vector3 v_i;
+    private float v_i;
     //=================================================
     //============= Calculated Parameters =============
     //=================================================
@@ -44,14 +47,127 @@ public class Body : MonoBehaviour
     public float f;
     [HideInInspector]
     public Vector3 v;
-    private float a;
-    private Vector3 h;
-    private float p;
-    private float mu;
-    private float epsilon;
-    private float e;
-    private float orbitdir;
-    private float T;
+
+    struct OrbitalConstants
+    {
+        public float a;
+        public float alpha;
+        public float mu;
+        public float h;
+        public float p;
+        public float e;
+        public float T;
+        public float rp;
+        public float ra;
+    }
+
+    private OrbitalConstants orbit;
+
+    OrbitalConstants CalcParams(float r, float v)
+    {
+        OrbitalConstants orbit = new OrbitalConstants();
+        orbit.mu = controller.UGC*(PrimaryBody.mass+mass);
+        orbit.alpha = 2/r - v*v/orbit.mu;
+        orbit.a = 1/orbit.alpha;
+        orbit.h = r*v;
+        orbit.p = orbit.h*orbit.h/orbit.mu;
+        orbit.e = Mathf.Sqrt(1-orbit.p/orbit.a);
+        orbit.T = 2*3.14159265f*Mathf.Sqrt(orbit.a*orbit.a*orbit.a/orbit.mu);
+        orbit.rp = orbit.a*(1 - orbit.e);
+        orbit.ra = orbit.a*(1 + orbit.e);
+        return orbit;
+    }
+
+    float Cfunction(float y)
+    {
+        float C;
+        if(y>0)
+        {
+            C = (1 - Mathf.Cos(Mathf.Sqrt(y)))/y;
+        }
+        else if(y<0)
+        {
+            C = (float)(Math.Cosh(-y) - 1)/(-y);
+        }
+        else
+        {
+            C = 1/2;
+        }
+        return C;
+    }
+
+    float Sfunction(float y)
+    {
+        float S;
+        if(y>0)
+        {
+            S = (Mathf.Sqrt(y) - Mathf.Sin(Mathf.Sqrt(y)))/Mathf.Sqrt(y*y*y);
+        }
+        else if(y<0)
+        {
+            S = ((float)Math.Sinh(-y) - Mathf.Sqrt(-y))/Mathf.Sqrt(-y*y*y);
+        }
+        else
+        {
+            S = 1/6;
+        }
+        return S;
+    }
+
+    float dSdy(float y)
+    {
+        float dSdy;
+        dSdy = (Cfunction(y) - 3*Sfunction(y))/(2*y);
+        return dSdy;
+    }
+
+    float dCdy(float y)
+    {
+        float dCdy;
+        dCdy = (1 - y*Sfunction(y) - 2*Cfunction(y))/(2*y);
+        return dCdy;
+    }
+
+    float F(float x, float r, float dt)
+    {
+        float F;
+        F = (1 - r*orbit.alpha)*x*x*x*Sfunction(orbit.alpha*x*x) + r*x - Mathf.Sqrt(orbit.mu) * dt;
+        return F;
+    }
+
+    float Fprime(float x, float r)
+    {
+        float Fprime;
+        Fprime = (1 - r*orbit.alpha)*x*x*Cfunction(orbit.alpha*x*x) + r;
+        return Fprime;
+    }
+
+    float Newton(float dt)
+    {
+        float xplus;
+        float xminus;
+        float x_o;
+        float x;
+        xplus = Mathf.Sqrt(orbit.mu)*dt/orbit.rp;
+        xminus = Mathf.Sqrt(orbit.mu)*dt/orbit.ra;
+        x_o = (xplus + xminus)/2;
+        x = x_o;
+        for(int i = 0; i<5; i++)
+        {
+            x = x_o - F(x_o,r_i,dt)/Fprime(x_o,r_i);
+            x_o = x;
+        }
+        return x;
+    }
+
+    Vector3 CalcPosition(float x, float r, float v, float dt)
+    {
+        float i;
+        float j;
+        i = r - x*x*Cfunction(orbit.alpha*x*x);
+        j = dt*v - x*x*x*Sfunction(orbit.alpha*x*x)*v/Mathf.Sqrt(orbit.mu);
+        return new Vector3(i,j,0);
+    }
 
     void Awake()
     {
@@ -85,70 +201,23 @@ public class Body : MonoBehaviour
         BodyScale = Mathf.Sqrt(PrimaryBody.radius*radius)/PrimaryBody.radius; // Calculate relative body scale
         if(primbodycheck==false) // Limit calculations to objects that are not the primary object
         {
-            calcparameters(r_i,f_i,v_i); // Calculate orbit parameters
+            orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
         }
         trail.enabled = true;
         trail.startWidth = 0.5f;
         trail.endWidth = 0.01f;
         trail.widthMultiplier = BodyScale;
-    }
-
-    //=================================================
-    //========== Orbit Parameter Calculations =========
-    //=================================================
-    void calcparameters(float r, float f, Vector3 v)
-    {
-        h = Vector3.Cross(controller.polartocartesian(r, f),v); // Calculate specific angular momentum (this is constant for all points of an orbit)
-        orbitdir = Mathf.Sign(h.z); // Set Orbit Direction (this only works because the simulation is two-dimensional)
-        mu = controller.UGC*(mass+PrimaryBody.mass); // Calculate gravitational constant (this is constant for all points of an orbit)
-        p = h.magnitude*h.magnitude/mu; // calculate orbital parameter (position of the semi-latus rectum) (this is constant for all points of an orbit)
-        epsilon = 0.5f*v.magnitude*v.magnitude - mu/r; // Calculate the orbit's specific energy (this is constant for all points of an orbit)
-        a = -mu/(2f*epsilon); // calculate orbit's semi-major axis (this applies only to elliptical and hyperbolic orbits) (this is constant for all points of an orbit)
-        e = Mathf.Sqrt(1-(p/a)); // calculate orbit eccentricity (this applies only to elliptical and hyperbolic orbits) (this is constant for all points of an orbit)
-        SOI_radius = a*Mathf.Pow(mass/PrimaryBody.mass,2/5)*radius/PrimaryBody.radius; // calculate the radius of the orbit's sphere of influence (this applies only to elliptical orbits)
-        T = 2*3.14159265f*Mathf.Sqrt((a*a*a)/mu);
-    }
-
-    //=================================================
-    //========== Orbit Position Calculations ==========
-    //=================================================
-    void calcposition()
-    {
-        //=================================================
-        //=============== Elliptical Orbits ===============
-        //=================================================
-        float M = Mathf.Sqrt(mu/(a*a*a))*controller.time; // Calculate Mean Anomoly for current simulation time
-        float Ei; // Initialize Ei
-        float E = M; // Set Eccentric Anomoly equal to mean anomoly as initial "guess"
-        for(int i = 0; i<4; i++) //iterate 4 times per update to solve for actual Eccentric Anomoly
-        {
-            Ei = E; // Set Ei to E from previous iteration (for first iteration this sets Ei = M)
-            float numerator = Ei - e*Mathf.Sin(Ei) - M; // calculate Newton's Method Numerator
-            float denomninator = 1 - e*Mathf.Cos(Ei); // calculate denominator of NEwton;s Method
-            E = Ei - numerator/denomninator; // Calculate E value based on above
-        }
-        // Four lines below calculate for the True Anomoly, f
-        float num = 1+e;
-        float den = 1-e;
-        float term = Mathf.Sqrt(num/den)*Mathf.Tan(E/2);
-        f = orbitdir*Mathf.Rad2Deg*2*Mathf.Atan(term);
-        //print(Name + f); //debug line
-        r = Mathf.Log(a*(1-e*Mathf.Cos(E)),5)-14.5f; // calculate radial position based on true anomoly
+        transform.position = new Vector3(0,0,0);
     }
 
     void Update()
     {
-        transform.localScale = new Vector3(1,1,1)*BodyScale*controller.BodyScale; // Set relative scale based on largest object in system
-        SOI.transform.localScale = new Vector3(1,1,1)*SOI_radius*controller.ScaleFactor; // Set relative scale of Sphere of Influence (for display)
-        calcposition();
-        if(primbodycheck) // Set Primary Body to 0,0,0 so it doesn't move
+        transform.localScale = new Vector3(1,1,1)*BodyScale;
+        float x;
+        if(primbodycheck==false)
         {
-            transform.position = new Vector3(0.0f,0.0f,0.0f);
+            x = Newton(controller.time);
+            transform.position = CalcPosition(x, r_i, v_i, controller.time)*controller.ScaleFactor;
         }
-        else
-        {
-            transform.position = controller.polartocartesian(r, f);//*controller.ScaleFactor; 
-        }
-        trail.time = T*controller.TrailRatio/controller.TimeScale;
     }
 }

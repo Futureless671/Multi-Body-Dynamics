@@ -170,22 +170,15 @@ MonoBehaviour:
   gamecam: {fileID: 519420031}
   Bodies:
   - {fileID: 648517125095974894, guid: a331bf2281986e248b85e9e5aba375ce, type: 3}
-  - {fileID: 5821647232441374508, guid: a9d753ad54a132144967f64d7e26b84a, type: 3}
-  - {fileID: 5413765375308416728, guid: 760fb12f8b106a54f8bf846f4e2a6993, type: 3}
   - {fileID: 2418742559767410224, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
-  - {fileID: 3139158299839344693, guid: bd15a6a1ad5616e4bae40680ef62e37d, type: 3}
-  - {fileID: 7220859338279063489, guid: a14a61f1b6ba0a54cbaca26e3bb4e8c1, type: 3}
-  - {fileID: 5571957305664826287, guid: f5cf9338862dce2459133b414e192848, type: 3}
-  - {fileID: 1060687680904756170, guid: a9c1e5e7d96bc08438f4e555ac7ae8d9, type: 3}
-  - {fileID: 4718487963682883291, guid: 2cfcb855618d7db428f16e597a682725, type: 3}
   realbodies: []
   ScaleFactor: 0.00000001
   BodyScale: 1
-  TimeScale: 15770000
+  TimeScale: 1000000
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0
-  play: 1
+  play: 0
   InertialFoR: {fileID: 0}
   TrailRatio: 0.75
 --- !u!1 &519420028
