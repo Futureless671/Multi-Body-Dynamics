@@ -174,11 +174,11 @@ MonoBehaviour:
   realbodies: []
   ScaleFactor: 0.00000001
   BodyScale: 1
-  TimeScale: 1000000
+  TimeScale: 100000
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0
-  play: 0
+  play: 1
   InertialFoR: {fileID: 0}
   TrailRatio: 0.75
 --- !u!1 &519420028

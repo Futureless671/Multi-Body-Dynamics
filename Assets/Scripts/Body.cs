@@ -198,7 +198,7 @@ public class Body : MonoBehaviour
         //=================================================
         //============== Initial Calculations =============
         //=================================================
-        BodyScale = Mathf.Sqrt(PrimaryBody.radius*radius)/PrimaryBody.radius; // Calculate relative body scale
+        BodyScale = Mathf.Sqrt(radius/PrimaryBody.radius); // Calculate relative body scale
         if(primbodycheck==false) // Limit calculations to objects that are not the primary object
         {
             orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
@@ -207,6 +207,7 @@ public class Body : MonoBehaviour
         trail.startWidth = 0.5f;
         trail.endWidth = 0.01f;
         trail.widthMultiplier = BodyScale;
+        trail.time = orbit.T*0.75f/controller.TimeScale;
         transform.position = new Vector3(0,0,0);
     }
 
