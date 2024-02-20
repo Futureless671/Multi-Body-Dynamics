@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Stylesheet.uss?fileID=7433441132597879392&amp;guid=83e9549f5a7ea38448756e249febbdff&amp;type=3#Stylesheet" />
+    <ui:VisualElement name="Root" style="flex-grow: 1;">
+        <ui:VisualElement name="Screen" style="flex-grow: 1; height: 86%;" />
+        <ui:VisualElement name="Timer" style="flex-grow: 1; height: 0; flex-direction: row; align-self: auto; align-items: center; justify-content: center;">
+            <ui:Label tabindex="-1" text="Years" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Years" class="timer" />
+            <ui:Label tabindex="-1" text="Days" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Days" class="timer" />
+            <ui:Label tabindex="-1" text="Hours" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Hours" class="timer" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

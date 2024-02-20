@@ -56,7 +56,7 @@ public class SimController : MonoBehaviour
         ScreenSize.y = gamecam.pixelHeight;
         float lerpval = 0;
         float aspect = ScreenSize.x/ScreenSize.y;
-        float MarginSize = 0.1f;
+        float MarginSize = 0.05f;
         float MarginPixel = MarginSize*ScreenSize.y;
         foreach(Body i in realbodies)
         {

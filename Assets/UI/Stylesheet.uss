@@ -1,4 +1,6 @@
 .button {
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
     background-color: rgba(0, 0, 0, 0.39);
     margin-top: 6px;
     margin-right: 6px;
@@ -29,4 +31,35 @@
     max-width: 90%;
     max-height: 119px;
     height: 100px;
+}
+
+.button:hover {
+    transition-duration: 0.2s;
+    transition-timing-function: ease;
+    scale: 1.03 1.03;
+}
+
+.button:active {
+    transition-duration: 0s;
+    border-left-color: rgb(128, 128, 128);
+    border-right-color: rgb(128, 128, 128);
+    border-top-color: rgb(128, 128, 128);
+    border-bottom-color: rgb(128, 128, 128);
+}
+
+.timer {
+    -unity-font-definition: url('project://database/Assets/Fonts/nasalization-rg%20SDF.asset?fileID=11400000&guid=e0240e6db6c025e4a98122a510d89bd9&type=2#nasalization-rg SDF');
+    font-size: 40px;
+    padding-top: 0;
+    padding-right: 20px;
+    padding-bottom: 0;
+    padding-left: 20px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: upper-center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 135px;
+    max-width: 135px;
+    min-width: 135px;
+    align-items: auto;
 }
