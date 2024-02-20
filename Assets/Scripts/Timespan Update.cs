@@ -26,6 +26,6 @@ public class TimespanUpdate : MonoBehaviour
         years = Mathf.Floor(time.Days/365);
         Days = time.Days - years*365;
         Hours = time.Hours;
-        txt.text = "Y: " + years + "  D: " + Days + "  H: " + Hours;
+        txt.text = "Y: " + years + " D: " + Days.ToString("000") + " H: " + Hours.ToString("00");
     }
 }

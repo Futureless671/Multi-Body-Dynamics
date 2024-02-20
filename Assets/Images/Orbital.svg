@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 28.2.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 253.83 79.31" style="enable-background:new 0 0 253.83 79.31;" xml:space="preserve">
+<style type="text/css">
+	.st0{filter:url(#Adobe_OpacityMaskFilter);}
+	.st1{filter:url(#Adobe_OpacityMaskFilter_00000006688230954327609730000016559836452570253704_);}
+	.st2{fill:none;stroke:#000000;stroke-width:6;stroke-miterlimit:10;}
+	.st3{mask:url(#Ring_Back_00000003826515874447036740000003608129493792417969_);}
+	.st4{fill:#FFFFFF;stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
+	.st5{font-family:'NasalizationRg-Regular';}
+	.st6{font-size:72px;}
+	.st7{letter-spacing:-4.29;}
+	.st8{letter-spacing:-1.43;}
+	.st9{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+	.st10{filter:url(#Adobe_OpacityMaskFilter_00000106123092360876311270000008665719704254834063_);}
+	.st11{mask:url(#SVGID_1_);}
+	.st12{fill:#FFFFFF;}
+</style>
+<g>
+	<defs>
+		<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="0" y="8.8" width="85.5" height="51.93">
+			<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
+			<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
+		</filter>
+	</defs>
+	
+		<mask maskUnits="userSpaceOnUse" x="0" y="8.8" width="85.5" height="51.93" id="Ring_Back_00000059997545465232329610000004117103206649234355_">
+		<g class="st0">
+			<defs>
+				
+					<filter id="Adobe_OpacityMaskFilter_00000104690741330276650540000014950412460966421675_" filterUnits="userSpaceOnUse" x="13.5" y="-1" width="241.33" height="81.31">
+					<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
+					<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
+				</filter>
+			</defs>
+			
+				<mask maskUnits="userSpaceOnUse" x="13.5" y="-1" width="241.33" height="81.31" id="Ring_Back_00000059997545465232329610000004117103206649234355_">
+				<g style="filter:url(#Adobe_OpacityMaskFilter_00000104690741330276650540000014950412460966421675_);">
+					<path class="st2" d="M83.79,11.9c2.3,4.04-14.1,18.01-36.63,31.21S4.51,63.74,2.21,59.7"/>
+				</g>
+			</mask>
+			<g style="mask:url(#Ring_Back_00000059997545465232329610000004117103206649234355_);">
+				<text transform="matrix(1 0 0 1 14.5004 60.2998)" class="st4 st5 st6">O</text>
+				<text transform="matrix(0.7 0 0 0.7 73.2518 60.2998)" class="st4 st5 st6">rbi</text>
+				<text transform="matrix(0.7 0 0 0.7 159.6361 60.2998)" class="st4 st5 st6 st7">t</text>
+				<text transform="matrix(0.7 0 0 0.7 184.9379 60.2998)" class="st4 st5 st6 st8">a</text>
+				<text transform="matrix(0.7 0 0 0.7 222.4867 60.2998)" class="st4 st5 st6">l</text>
+			</g>
+		</g>
+	</mask>
+	<path id="Ring_Back" class="st9" d="M2.22,59.72c-2.35-4.01,14-17.96,36.52-31.17S81.43,7.88,83.78,11.88"/>
+	<path id="Ring_Front" class="st9" d="M83.78,11.88c2.35,4.01-14,17.96-36.52,31.17S4.57,63.72,2.22,59.72"/>
+	<defs>
+		
+			<filter id="Adobe_OpacityMaskFilter_00000158714296534355149350000005242832788100468369_" filterUnits="userSpaceOnUse" x="18.6" y="11.7" width="233.77" height="48.6">
+			<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
+			<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
+		</filter>
+	</defs>
+	<mask maskUnits="userSpaceOnUse" x="18.6" y="11.7" width="233.77" height="48.6" id="SVGID_1_">
+		<g style="filter:url(#Adobe_OpacityMaskFilter_00000158714296534355149350000005242832788100468369_);">
+			<path class="st2" d="M83.79,11.9c2.3,4.04-14.1,18.01-36.63,31.21S4.51,63.74,2.21,59.7"/>
+		</g>
+	</mask>
+	<g class="st11">
+		<path class="st12" d="M47.19,11.7c14.11,0,21.96,8.06,21.96,24.41c0,16.27-7.78,24.19-21.96,24.19h-6.62
+			c-14.19,0-21.96-7.92-21.96-24.19c0-16.35,7.85-24.41,21.96-24.41H47.19z M40.57,20.19c-9.36,0-13.47,4.75-13.47,15.91
+			c0,11.09,4.03,15.7,13.47,15.7h6.62c9.36,0,13.39-4.61,13.39-15.77c0-11.09-4.03-15.84-13.39-15.84H40.57z"/>
+		<path class="st12" d="M95.73,26.28c7.66,0,10.94,4.74,10.94,10.18c0,4.23-2.02,8.77-7.21,10.23l7.91,13.61h-6.6l-7.76-13.15h-8.87
+			c-0.55,0-0.86,0.25-0.86,0.86v12.3h-5.95V46.84c0-3.83,1.61-5.39,5.34-5.39h13.25c3.38,0,4.74-2.32,4.74-4.74
+			c0-2.42-1.46-4.49-4.74-4.49H77.28v-5.95H95.73z"/>
+		<path class="st12" d="M131.16,26.28c8.01,0,11.39,3.78,11.39,9.32c0,3.93-1.71,6.3-4.89,7.56c3.23,1.31,5.04,3.83,5.04,7.76
+			c0,5.44-3.38,9.37-11.39,9.37h-15.12c-1.92,0-2.82-0.91-2.82-2.77V29.05c0-1.86,0.91-2.77,2.82-2.77H131.16z M119.22,40.64h12.1
+			c3.53,0,5.24-1.31,5.24-4.08c0-2.67-1.56-4.44-5.19-4.44h-11.49c-0.4,0-0.66,0.2-0.66,0.6V40.64z M119.22,53.85
+			c0,0.4,0.25,0.55,0.66,0.55h11.59c3.58,0,5.24-1.66,5.24-4.44c0-2.87-1.76-4.38-5.24-4.38h-12.25V53.85z"/>
+		<path class="st12" d="M155.55,26.28V60.3h-5.95V26.28H155.55z"/>
+		<path class="st12" d="M186.95,26.28v5.95h-9.93V60.3h-6V32.23h-9.93v-5.95H186.95z"/>
+		<path class="st12" d="M192.45,60.3h-6.55l11.94-30.24c1.26-3.18,3.58-4.38,7.16-4.38c3.53,0,5.85,1.21,7.06,4.38l11.49,30.24h-6.6
+			l-10.33-27.37c-0.3-0.81-0.86-1.16-1.66-1.16s-1.36,0.35-1.71,1.16L192.45,60.3z"/>
+		<path class="st12" d="M232.21,26.28v22.23c0,3.28,1.61,5.85,6.96,5.85h13.2v5.95h-13.56c-9.02,0-12.55-4.94-12.55-11.74V26.28
+			H232.21z"/>
+	</g>
+</g>
+</svg>

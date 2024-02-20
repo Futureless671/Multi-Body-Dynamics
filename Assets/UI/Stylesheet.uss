@@ -1,0 +1,32 @@
+.button {
+    background-color: rgba(0, 0, 0, 0.39);
+    margin-top: 6px;
+    margin-right: 6px;
+    margin-bottom: 6px;
+    margin-left: 6px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
+    -unity-font-definition: url('project://database/Assets/Fonts/nasalization-rg%20SDF.asset?fileID=11400000&guid=e0240e6db6c025e4a98122a510d89bd9&type=2#nasalization-rg SDF');
+    -unity-font: url('project://database/Assets/Fonts/nasalization-rg.otf?fileID=12800000&guid=3f0ad464760b04d4f8415e31f92cde84&type=3#nasalization-rg');
+    color: rgb(255, 255, 255);
+    font-size: 30px;
+    width: 100%;
+    align-self: center;
+    min-width: 500px;
+    -unity-text-align: middle-center;
+    align-items: center;
+    min-height: 120px;
+    max-width: 90%;
+    max-height: 119px;
+    height: 100px;
+}

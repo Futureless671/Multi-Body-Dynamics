@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Stylesheet.uss?fileID=7433441132597879392&amp;guid=83e9549f5a7ea38448756e249febbdff&amp;type=3#Stylesheet" />
+    <ui:VisualElement name="Screen" style="flex-grow: 1; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); transition-property: background-color; transition-duration: 1s; min-width: auto;">
+        <ui:VisualElement name="Logo" style="flex-grow: 1; height: 24%; background-image: none; -unity-background-scale-mode: scale-to-fit; opacity: 1; justify-content: center; -unity-background-image-tint-color: rgb(255, 255, 255); left: auto; width: 48%; top: auto; align-items: center; align-self: center;">
+            <ui:Label tabindex="-1" text="&lt;smallcaps&gt;Orbital" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Logo" style="-unity-font-definition: url(&apos;project://database/Assets/Fonts/nasalization-rg%20SDF.asset?fileID=11400000&amp;guid=e0240e6db6c025e4a98122a510d89bd9&amp;type=2#nasalization-rg SDF&apos;); font-size: 200px; color: rgb(255, 255, 255); -unity-text-align: upper-center; align-self: center; align-items: center;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Buttons" style="flex-grow: 1; height: 514px; width: 41%; align-self: center; justify-content: center; translate: 0 0;">
+            <ui:Button text="New Simulation" parse-escape-sequences="true" display-tooltip-when-elided="true" name="New-Sim" class="button" />
+            <ui:Button text="Load Simulation" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Load-Sim" class="button" />
+            <ui:Button text="Exit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Exit" class="button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
