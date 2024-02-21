@@ -9,10 +9,5 @@
             <ui:Button text="Load Simulation" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Load-Sim" class="button" />
             <ui:Button text="Exit" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Exit" class="button" />
         </ui:VisualElement>
-        <ui:VisualElement name="Timer" style="flex-grow: 1; height: 0; flex-direction: row; align-self: auto; align-items: center; justify-content: center;">
-            <ui:Label tabindex="-1" text="Years" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Years" class="timer" />
-            <ui:Label tabindex="-1" text="Days" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Days" class="timer" />
-            <ui:Label tabindex="-1" text="Hours" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Hours" class="timer" />
-        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

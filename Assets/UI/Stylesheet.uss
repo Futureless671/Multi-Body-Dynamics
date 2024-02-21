@@ -63,3 +63,70 @@
     min-width: 135px;
     align-items: auto;
 }
+
+.sidebar-closed {
+    flex-grow: 1;
+    flex-direction: row-reverse;
+    width: auto;
+    min-width: auto;
+    translate: 430px 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.sidebar-open {
+    translate: 0 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.unity-text-element--inner-input-field-component {
+    -unity-text-align: middle-center;
+    color: rgb(255, 255, 255);
+    -unity-font-style: normal;
+}
+
+.unity-base-text-field__input {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    border-bottom-width: 6px;
+    border-top-width: -12px;
+    border-right-width: -9px;
+    border-left-width: -5px;
+}
+
+.color-slider {
+    -unity-font-definition: url('project://database/Assets/Fonts/nasalization-rg%20SDF.asset?fileID=11400000&guid=e0240e6db6c025e4a98122a510d89bd9&type=2#nasalization-rg SDF');
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 3px;
+    padding-right: 3px;
+    padding-bottom: 3px;
+    padding-left: 3px;
+    align-items: stretch;
+    align-self: auto;
+    -unity-text-align: upper-left;
+    width: 29px;
+    height: 256px;
+    max-height: 256px;
+    min-height: 256px;
+}
+
+.unity-float-field__input {
+    width: auto;
+    max-width: 50%;
+    align-self: auto;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    -unity-text-align: upper-left;
+    padding-left: 10px;
+    cursor: initial;
+}
