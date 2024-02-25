@@ -16,7 +16,7 @@ public class Body : MonoBehaviour
     [SerializeField]
     public string Name;
     [SerializeField]
-    private Color color;
+    public Color color;
     private TrailRenderer trail;
     private SpriteRenderer sprite;
     private SimController controller;
@@ -27,18 +27,26 @@ public class Body : MonoBehaviour
     private GameObject SOI;
     public float SOI_radius;
     public float BodyScale;
+    public RenderTexture rt_base;
+    public RenderTexture rt;
+    public Camera rtcam;
+    private float accumtime = 0;
+    public BodyEntry bodyentry;
     //=================================================
     //=========== Physical Input Parameters ===========
     //=================================================
     public float mass;
+    private float mass_mem;
     [SerializeField]
-    private float radius;
+    public float radius;
     [SerializeField]
     public float r_i;
+    private float r_i_mem;
     [SerializeField]
     private float f_i;
     [SerializeField]
-    private float v_i;
+    public float v_i;
+    private float v_i_mem;
     //=================================================
     //============= Calculated Parameters =============
     //=================================================
@@ -169,12 +177,14 @@ public class Body : MonoBehaviour
         return new Vector3(i,j,0);
     }
 
-    void Awake()
+    public void Awake()
     {
         //=================================================
         //============= Object Initialization =============
         //=================================================
         // This section initializes the necessary parameters for this object to function properly and retrieves necessary references to other objects
+        r_i_mem = r_i;
+        v_i_mem = v_i;
         SOI = transform.GetChild(0).gameObject; // Fetch Sphere of Influence Object
         primbodycheck = false; // initialize primary body bool as false (this is a basic check within the script to determine whether the current object is the system's primary body)
         controller = FindObjectOfType<SimController>(); // Get reference to sim controller
@@ -193,7 +203,11 @@ public class Body : MonoBehaviour
         Gradient gradient = new Gradient(); // Initialize new gradient object
         gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(color, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)}); // Set trail color gradient
         trail.colorGradient = gradient; // assign trail color gradient
-
+        rtcam = transform.GetChild(1).GetComponent<Camera>();
+        rt_base = new RenderTexture(256,256,8);
+        rt = Instantiate(rt_base);
+        rtcam.targetTexture = rt;
+        rt.Create();
 
         //=================================================
         //============== Initial Calculations =============
@@ -213,12 +227,32 @@ public class Body : MonoBehaviour
 
     void Update()
     {
-        transform.localScale = new Vector3(1,1,1)*BodyScale;
+        accumtime += Time.fixedDeltaTime;
+        int desiredfps = 10;
+        if(1/accumtime<=desiredfps)
+        {
+            rtcam.Render();
+            accumtime = 0;
+        }
+        if(r_i != r_i_mem || v_i != v_i_mem || mass != mass_mem)
+        {
+            if(primbodycheck==false) // Limit calculations to objects that are not the primary object
+            {
+                orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
+            }
+        }
+        sprite.color = color; // Set sprite color
         float x;
         if(primbodycheck==false)
         {
+            transform.localScale = new Vector3(1,1,1)*BodyScale;
             x = Newton(controller.time);
             transform.position = CalcPosition(x, r_i, v_i, controller.time)*controller.ScaleFactor;
+        }
+        else
+        {
+            //transform.position = new Vector3(0,0,0);
+            transform.localScale = new Vector3(1,1,1);
         }
     }
 }

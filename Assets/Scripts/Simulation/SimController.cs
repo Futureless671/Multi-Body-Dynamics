@@ -82,6 +82,12 @@ public class SimController : MonoBehaviour
         gamecam.orthographicSize *= Mathf.SmoothStep(1,1.01f,lerpval);
     }
 
+    public void resetsim()
+    {
+        play=false;
+        time = 0;
+    }
+
     void FixedUpdate()
     {
         if(play==true)
