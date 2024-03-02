@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,7 +10,6 @@ public class SimController : MonoBehaviour
 {
     public Camera gamecam;
     public List<Body> Bodies = new List<Body>{};
-    public List<Body> realbodies = new List<Body>{};
     public float ScaleFactor;
     public float BodyScale = 1;
     public float TimeScale;
@@ -26,27 +26,19 @@ public class SimController : MonoBehaviour
     void Start()
     {
         gamecam = FindObjectOfType<Camera>();
-        Body FakePrimaryBody = Bodies[0];
+    }
+
+    public void InitializeSim()
+    {
         float mostmassive = 0;
         foreach(Body i in Bodies)
         {
             if(i.mass>mostmassive)
             {
-                FakePrimaryBody = i;
-                mostmassive = FakePrimaryBody.mass;
+                mostmassive = i.mass;
+                PrimaryBody = i;
             }
         }
-        Bodies.Remove(FakePrimaryBody);
-        PrimaryBody = Instantiate(FakePrimaryBody);
-        realbodies.Add(PrimaryBody);
-        float maxdist = 0;
-        foreach(Body i in Bodies)
-        {
-            Body tmp = Instantiate(i);
-            realbodies.Add(tmp);
-            maxdist = Mathf.Max(i.r_i,maxdist);
-        }
-        ScaleFactor = 6/maxdist;
     }
 
     void adjustcamera()
@@ -58,7 +50,7 @@ public class SimController : MonoBehaviour
         float aspect = ScreenSize.x/ScreenSize.y;
         float MarginSize = 0.05f;
         float MarginPixel = MarginSize*ScreenSize.y;
-        foreach(Body i in realbodies)
+        foreach(Body i in Bodies)
         {
             Vector2 Position = gamecam.WorldToScreenPoint(i.transform.position);
             if(Position.x<MarginPixel)

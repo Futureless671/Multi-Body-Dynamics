@@ -177,7 +177,7 @@ public class Body : MonoBehaviour
         return new Vector3(i,j,0);
     }
 
-    public void Awake()
+    void Awake()
     {
         //=================================================
         //============= Object Initialization =============

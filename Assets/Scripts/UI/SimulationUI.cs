@@ -128,9 +128,14 @@ public class SimulationUI : MonoBehaviour
         editoractive = false;
         body_editor.style.display = DisplayStyle.None;
         body_view.style.display = DisplayStyle.Flex;
-        root.Q<VisualElement>("Body-List").Remove(editorbody.bodyentry.button);
+        if(!newbody)
+        {
+            root.Q<VisualElement>("Body-List").Remove(editorbody.bodyentry.button);
+        }
+        controller.Bodies.Remove(editorbody);
         Destroy(editorbody.gameObject);
         editorbody = null;
+        controller.resetsim();
     }
 
     private void CreateBody(ClickEvent evt)
@@ -138,6 +143,8 @@ public class SimulationUI : MonoBehaviour
         editorbody = Instantiate(template);
         InitializeBodyEditor();
         newbody = true;
+        controller.Bodies.Add(editorbody);
+        controller.resetsim();
     }
 
     private void ToggleSidebar(ClickEvent evt)
@@ -180,6 +187,7 @@ public class SimulationUI : MonoBehaviour
         if(editoractive)
         {
             editorbody.Name = namefield.value;
+            editorbody.name = namefield.value;
             color = new Color(redvalue/255, greenvalue/255, bluevalue/255, 1f);
             editorbody.color = color;
             editorbody.radius = bodyradius/1000;
