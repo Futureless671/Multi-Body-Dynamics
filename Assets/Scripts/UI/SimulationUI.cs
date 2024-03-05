@@ -172,10 +172,10 @@ public class SimulationUI : MonoBehaviour
         redslider.value = editorbody.color.r*255;
         greenslider.value = editorbody.color.g*255;
         blueslider.value = editorbody.color.b*255;
-        radiusfield.value = editorbody.radius*1000;
+        radiusfield.value = editorbody.radius/1000;
         massfield.value = editorbody.mass;
-        pradiusfield.value = editorbody.r_i*1000;
-        pvelocityfield.value = editorbody.v_i*1000;
+        pradiusfield.value = editorbody.r_i/1000;
+        pvelocityfield.value = editorbody.v_i/1000;
         editoractive = true;
         body_view.style.display = DisplayStyle.None;
         body_editor.style.display = DisplayStyle.Flex;
@@ -190,10 +190,10 @@ public class SimulationUI : MonoBehaviour
             editorbody.name = namefield.value;
             color = new Color(redvalue/255, greenvalue/255, bluevalue/255, 1f);
             editorbody.color = color;
-            editorbody.radius = bodyradius/1000;
+            editorbody.radius = bodyradius*1000;
             editorbody.mass = mass;
-            editorbody.r_i = periapsisradius/1000;
-            editorbody.v_i = periapsisvelocity/1000;
+            editorbody.r_i = periapsisradius*1000;
+            editorbody.v_i = periapsisvelocity*1000;
         }
     }
 }

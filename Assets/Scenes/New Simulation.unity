@@ -169,8 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamecam: {fileID: 519420031}
   Bodies: []
-  realbodies: []
-  ScaleFactor: 0.00000001
+  ScaleFactor: 1e-11
   BodyScale: 1
   TimeScale: 1000000
   PrimaryBody: {fileID: 0}

@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &132521606
 Transform:
   m_ObjectHideFlags: 0
@@ -171,7 +171,6 @@ MonoBehaviour:
   Bodies:
   - {fileID: 648517125095974894, guid: a331bf2281986e248b85e9e5aba375ce, type: 3}
   - {fileID: 2418742559767410224, guid: ffac16fb3bf91df4098968e24537b076, type: 3}
-  realbodies: []
   ScaleFactor: 0.00000001
   BodyScale: 1
   TimeScale: 1000000

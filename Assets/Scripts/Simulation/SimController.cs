@@ -28,16 +28,22 @@ public class SimController : MonoBehaviour
         gamecam = FindObjectOfType<Camera>();
     }
 
-    public void InitializeSim()
+    void InitializeSim()
     {
-        float mostmassive = 0;
+        float mostmassive = -1;
         foreach(Body i in Bodies)
         {
-            if(i.mass>mostmassive)
+            if(i.mass>=mostmassive)
             {
                 mostmassive = i.mass;
                 PrimaryBody = i;
+                print("Body Set");
             }
+            i.primbodycheck = false;
+        }
+        foreach(Body i in Bodies)
+        {
+            i.InitBody();
         }
     }
 
@@ -78,6 +84,8 @@ public class SimController : MonoBehaviour
     {
         play=false;
         time = 0;
+        InitializeSim();
+        gamecam.orthographicSize = 5;
     }
 
     void FixedUpdate()

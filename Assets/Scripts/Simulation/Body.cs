@@ -22,11 +22,11 @@ public class Body : MonoBehaviour
     private SimController controller;
     public Body PrimaryBody;
     public Body ParentBodyOverride;
-    private bool primbodycheck;
+    public bool primbodycheck;
     public float radialscale = 1;
     private GameObject SOI;
     public float SOI_radius;
-    public float BodyScale;
+    public float BodyScale = 1;
     public RenderTexture rt_base;
     public RenderTexture rt;
     public Camera rtcam;
@@ -177,52 +177,61 @@ public class Body : MonoBehaviour
         return new Vector3(i,j,0);
     }
 
+    public void InitBody()
+    {
+        trail.enabled = false; // Disable trail
+        trail.Clear();
+        PrimaryBody = controller.PrimaryBody;
+        if(PrimaryBody==null)
+        {
+            return;
+        }
+        if(PrimaryBody==this)
+        {
+            primbodycheck = true;
+        }
+        //=================================================
+        //============== Initial Calculations =============
+        //=================================================
+        BodyScale = Mathf.Max(0.1f,Mathf.Sqrt(radius/PrimaryBody.radius)); // Calculate relative body scale
+        if(float.IsNaN(BodyScale))
+        {
+            BodyScale = 1;
+        }
+        if(primbodycheck==false) // Limit calculations to objects that are not the primary object
+        {
+            orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
+        }
+        trail.widthMultiplier = BodyScale;
+        trail.time = orbit.T*0.75f/controller.TimeScale;
+        trail.enabled = true;
+    }
+
     void Awake()
     {
         //=================================================
         //============= Object Initialization =============
         //=================================================
         // This section initializes the necessary parameters for this object to function properly and retrieves necessary references to other objects
-        r_i_mem = r_i;
-        v_i_mem = v_i;
         SOI = transform.GetChild(0).gameObject; // Fetch Sphere of Influence Object
         primbodycheck = false; // initialize primary body bool as false (this is a basic check within the script to determine whether the current object is the system's primary body)
         controller = FindObjectOfType<SimController>(); // Get reference to sim controller
-        PrimaryBody = controller.PrimaryBody; // Fetch primary body from sim controller
-        // The following is a check to see if the sim controller returns a null value for the Primary body. This will only be the case if this object is the first object instantiated by the sim controller.
-        if(PrimaryBody==null)
-        {
-            PrimaryBody = GetComponent<Body>(); // Set current object as primary object for future use
-            primbodycheck = true; // Set primary body bool to true
-        }
         sprite = GetComponent<SpriteRenderer>(); // Fetch Reference to Sprite Renderer
         trail = GetComponent<TrailRenderer>(); // Fetch reference to Trail Renderer
-        trail.enabled = false; // Disable trail
         color = new Color(color.r,color.g,color.b,1.0f); // Set color variable to color set in Body parameters
         sprite.color = color; // Set sprite color
         Gradient gradient = new Gradient(); // Initialize new gradient object
-        gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(color, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)}); // Set trail color gradient
+        gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(Color.white, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)}); // Set trail color gradient
         trail.colorGradient = gradient; // assign trail color gradient
         rtcam = transform.GetChild(1).GetComponent<Camera>();
         rt_base = new RenderTexture(256,256,8);
         rt = Instantiate(rt_base);
         rtcam.targetTexture = rt;
         rt.Create();
-
-        //=================================================
-        //============== Initial Calculations =============
-        //=================================================
-        BodyScale = Mathf.Sqrt(radius/PrimaryBody.radius); // Calculate relative body scale
-        if(primbodycheck==false) // Limit calculations to objects that are not the primary object
-        {
-            orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
-        }
         trail.enabled = true;
         trail.startWidth = 0.5f;
         trail.endWidth = 0.01f;
-        trail.widthMultiplier = BodyScale;
-        trail.time = orbit.T*0.75f/controller.TimeScale;
-        transform.position = new Vector3(0,0,0);
+        InitBody();
     }
 
     void Update()
@@ -232,16 +241,13 @@ public class Body : MonoBehaviour
         if(1/accumtime<=desiredfps)
         {
             rtcam.Render();
+            rtcam.orthographicSize = BodyScale;
             accumtime = 0;
         }
-        if(r_i != r_i_mem || v_i != v_i_mem || mass != mass_mem)
-        {
-            if(primbodycheck==false) // Limit calculations to objects that are not the primary object
-            {
-                orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
-            }
-        }
         sprite.color = color; // Set sprite color
+        Gradient gradient = new Gradient(); // Initialize new gradient object
+        gradient.SetKeys(new GradientColorKey[] {new GradientColorKey(color, 0.0f), new GradientColorKey(Color.white, 1.0f)}, new GradientAlphaKey[] {new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(0.0f, 1.0f)}); // Set trail color gradient
+        trail.colorGradient = gradient; // assign trail color gradient
         float x;
         if(primbodycheck==false)
         {
@@ -251,7 +257,7 @@ public class Body : MonoBehaviour
         }
         else
         {
-            //transform.position = new Vector3(0,0,0);
+            transform.position = new Vector3(0,0,0);
             transform.localScale = new Vector3(1,1,1);
         }
     }

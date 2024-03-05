@@ -14,6 +14,9 @@ public class TimespanUpdate : MonoBehaviour
     private float years;
     private float Days;
     private float Hours;
+    private Button playbutton;
+    private Button pausebutton;
+    private Button stopbutton;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,10 +24,30 @@ public class TimespanUpdate : MonoBehaviour
         yrslabel = root.Q<Label>("Years");
         dayslabel = root.Q<Label>("Days");
         hrslabel = root.Q<Label>("Hours");
+        playbutton = root.Q<Button>("Play");
+        pausebutton = root.Q<Button>("Pause");
+        stopbutton = root.Q<Button>("Stop");
         controller = FindObjectOfType<SimController>();
+
+        playbutton.RegisterCallback<ClickEvent>(playsim);
+        pausebutton.RegisterCallback<ClickEvent>(pausesim);
+        stopbutton.RegisterCallback<ClickEvent>(stopsim);
     }
 
-    // Update is called once per frame
+    void playsim(ClickEvent evt)
+    {
+        controller.play = true;
+    }
+
+    void pausesim(ClickEvent evt)
+    {
+        controller.play = false;
+    }
+
+    void stopsim(ClickEvent evt)
+    {
+        controller.resetsim();
+    }
     
     void Update()
     {
