@@ -52,8 +52,8 @@ public class TimespanUpdate : MonoBehaviour
     void Update()
     {
         time = TimeSpan.FromSeconds(controller.time);
-        years = Mathf.Floor(time.Days/365);
-        Days = time.Days - years*365;
+        years = Mathf.Floor(time.Days/365.2422f);
+        Days = Mathf.Round(time.Days - years*365);
         Hours = time.Hours;
         yrslabel.text = "Y: " + years;
         dayslabel.text = "D: " + Days.ToString("000");

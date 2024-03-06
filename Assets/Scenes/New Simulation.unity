@@ -171,7 +171,7 @@ MonoBehaviour:
   Bodies: []
   ScaleFactor: 1e-11
   BodyScale: 1
-  TimeScale: 1000000
+  TimeScale: 1
   PrimaryBody: {fileID: 0}
   UGC: 6.6739995e-11
   time: 0

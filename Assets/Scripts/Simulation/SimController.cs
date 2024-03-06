@@ -14,7 +14,7 @@ public class SimController : MonoBehaviour
     public float BodyScale = 1;
     public float TimeScale;
     public Body PrimaryBody;
-    public float UGC = (float)6.674*Mathf.Pow(10,-11);
+    public float UGC = 6.674f*Mathf.Pow(10,-11);
     public float time;
     public bool play;
     public Body InertialFoR;
@@ -31,16 +31,21 @@ public class SimController : MonoBehaviour
     void InitializeSim()
     {
         float mostmassive = -1;
+        float furthest = -1;
         foreach(Body i in Bodies)
         {
             if(i.mass>=mostmassive)
             {
                 mostmassive = i.mass;
                 PrimaryBody = i;
-                print("Body Set");
+            }
+            if(i.r_i>=furthest)
+            {
+                furthest = i.r_i;
             }
             i.primbodycheck = false;
         }
+        ScaleFactor = 6/furthest;
         foreach(Body i in Bodies)
         {
             i.InitBody();
@@ -83,8 +88,8 @@ public class SimController : MonoBehaviour
     public void resetsim()
     {
         play=false;
-        time = 0;
         InitializeSim();
+        time = 0;
         gamecam.orthographicSize = 5;
     }
 

@@ -31,6 +31,7 @@
     max-width: 90%;
     max-height: 119px;
     height: 100px;
+    opacity: 1;
 }
 
 .button:hover {
@@ -64,7 +65,7 @@
     align-items: auto;
 }
 
-.sidebar-closed {
+.right-sidebar-closed {
     flex-grow: 1;
     flex-direction: row-reverse;
     width: auto;
@@ -74,7 +75,7 @@
     transition-timing-function: ease-out;
 }
 
-.sidebar-open {
+.right-sidebar-open {
     translate: 0 0;
     transition-duration: 0.2s;
     transition-timing-function: ease-out;
@@ -84,6 +85,13 @@
     -unity-text-align: middle-center;
     color: rgb(255, 255, 255);
     -unity-font-style: normal;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-left: 0;
+    width: auto;
+    align-items: stretch;
 }
 
 .unity-base-text-field__input {
@@ -93,9 +101,12 @@
     border-bottom-color: rgb(255, 255, 255);
     background-color: rgba(0, 0, 0, 0);
     border-bottom-width: 6px;
-    border-top-width: -12px;
-    border-right-width: -9px;
-    border-left-width: -5px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-left-width: 0;
+    justify-content: flex-start;
+    align-self: auto;
+    align-items: stretch;
 }
 
 .color-slider {
@@ -145,4 +156,65 @@
 
 .unity-scroll-view__content-container--vertical {
     flex-direction: column-reverse;
+}
+
+.unity-foldout__checkmark {
+    background-color: rgba(255, 255, 255, 0);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    scale: 2 2;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.unity-foldout__input {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.left-sidebar-closed {
+    flex-direction: row;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    translate: -430px 0;
+    transition-timing-function: ease-out;
+    transition-duration: 0.2s;
+}
+
+.left-sidebar-open {
+    translate: 0 0;
+    transition-timing-function: ease-out;
+    transition-duration: 0.2s;
+}
+
+.unity-foldout__content {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    -unity-font-definition: url('project://database/Assets/Fonts/nasalization-rg%20SDF.asset?fileID=11400000&guid=e0240e6db6c025e4a98122a510d89bd9&type=2#nasalization-rg SDF');
+    font-size: 32px;
+}
+
+.unity-popup-field__input {
+    background-color: rgba(0, 0, 0, 0.39);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
 }

@@ -7,10 +7,12 @@
             <ui:Button text="Stop" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Stop" class="button" style="height: auto; width: auto; max-width: none; max-height: none; min-width: auto; min-height: auto;" />
         </ui:VisualElement>
         <ui:VisualElement name="Screen" picking-mode="Ignore" style="flex-grow: 1; height: auto; visibility: hidden; min-height: 783px;" />
-        <ui:VisualElement name="Timer" picking-mode="Ignore" style="flex-grow: 1; height: auto; flex-direction: row; align-self: auto; align-items: center; justify-content: center;">
-            <ui:Label tabindex="-1" text="Years" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Years" class="timer" />
-            <ui:Label tabindex="-1" text="Days" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Days" class="timer" />
-            <ui:Label tabindex="-1" text="Hours" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Hours" class="timer" />
+        <ui:VisualElement name="Timer" picking-mode="Ignore" style="flex-grow: 1; height: auto; flex-direction: column; align-self: auto; align-items: center; justify-content: flex-start; min-height: auto;">
+            <ui:VisualElement name="TimeController" style="flex-grow: 1; align-items: center; flex-direction: row; justify-content: center; max-height: 154px;">
+                <ui:Label tabindex="-1" text="Years" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Years" picking-mode="Ignore" class="timer" style="min-height: auto;" />
+                <ui:Label tabindex="-1" text="Days" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Days" picking-mode="Ignore" class="timer" />
+                <ui:Label tabindex="-1" text="Hours" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Hours" picking-mode="Ignore" class="timer" style="min-height: auto;" />
+            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

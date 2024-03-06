@@ -36,25 +36,22 @@ public class Body : MonoBehaviour
     //=========== Physical Input Parameters ===========
     //=================================================
     public float mass;
-    private float mass_mem;
     [SerializeField]
     public float radius;
     [SerializeField]
     public float r_i;
-    private float r_i_mem;
     [SerializeField]
     private float f_i;
     [SerializeField]
     public float v_i;
-    private float v_i_mem;
     //=================================================
     //============= Calculated Parameters =============
     //=================================================
-    private float r;
-    //[HideInInspector]
     public float f;
     [HideInInspector]
     public Vector3 v;
+    public float T;
+    public float a;
 
     struct OrbitalConstants
     {
@@ -80,7 +77,7 @@ public class Body : MonoBehaviour
         orbit.h = r*v;
         orbit.p = orbit.h*orbit.h/orbit.mu;
         orbit.e = Mathf.Sqrt(1-orbit.p/orbit.a);
-        orbit.T = 2*3.14159265f*Mathf.Sqrt(orbit.a*orbit.a*orbit.a/orbit.mu);
+        orbit.T = 2*Mathf.PI*Mathf.Sqrt(orbit.a*orbit.a*orbit.a/orbit.mu);
         orbit.rp = orbit.a*(1 - orbit.e);
         orbit.ra = orbit.a*(1 + orbit.e);
         return orbit;
@@ -88,20 +85,18 @@ public class Body : MonoBehaviour
 
     float Cfunction(float y)
     {
-        float C;
         if(y>0)
         {
-            C = (1 - Mathf.Cos(Mathf.Sqrt(y)))/y;
+            return (1 - Mathf.Cos(Mathf.Sqrt(y)))/y;
         }
         else if(y<0)
         {
-            C = (float)(Math.Cosh(-y) - 1)/(-y);
+            return (float)(Math.Cosh(-y) - 1)/(-y);
         }
         else
         {
-            C = 1/2;
+            return 1/2;
         }
-        return C;
     }
 
     float Sfunction(float y)
@@ -138,16 +133,12 @@ public class Body : MonoBehaviour
 
     float F(float x, float r, float dt)
     {
-        float F;
-        F = (1 - r*orbit.alpha)*x*x*x*Sfunction(orbit.alpha*x*x) + r*x - Mathf.Sqrt(orbit.mu) * dt;
-        return F;
+        return (1 - r*orbit.alpha)*x*x*x*Sfunction(orbit.alpha*x*x) + r*x - Mathf.Sqrt(orbit.mu) * dt;
     }
 
     float Fprime(float x, float r)
     {
-        float Fprime;
-        Fprime = (1 - r*orbit.alpha)*x*x*Cfunction(orbit.alpha*x*x) + r;
-        return Fprime;
+        return (1 - r*orbit.alpha)*x*x*Cfunction(orbit.alpha*x*x) + r;
     }
 
     float Newton(float dt)
@@ -160,7 +151,7 @@ public class Body : MonoBehaviour
         xminus = Mathf.Sqrt(orbit.mu)*dt/orbit.ra;
         x_o = (xplus + xminus)/2;
         x = x_o;
-        for(int i = 0; i<5; i++)
+        for(int i = 0; i<10; i++)
         {
             x = x_o - F(x_o,r_i,dt)/Fprime(x_o,r_i);
             x_o = x;
@@ -179,8 +170,8 @@ public class Body : MonoBehaviour
 
     public void InitBody()
     {
-        trail.enabled = false; // Disable trail
         trail.Clear();
+        trail.enabled = false; // Disable trail
         PrimaryBody = controller.PrimaryBody;
         if(PrimaryBody==null)
         {
@@ -201,10 +192,13 @@ public class Body : MonoBehaviour
         if(primbodycheck==false) // Limit calculations to objects that are not the primary object
         {
             orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
+            T = orbit.T/86400;
+            a = orbit.a;
         }
         trail.widthMultiplier = BodyScale;
         trail.time = orbit.T*0.75f/controller.TimeScale;
         trail.enabled = true;
+        trail.Clear();
     }
 
     void Awake()

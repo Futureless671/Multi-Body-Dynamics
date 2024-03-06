@@ -34,21 +34,30 @@ public class SimulationUI : MonoBehaviour
     private float periapsisvelocity;
     private bool editoractive;
     private Button open_settings;
+    private Button open_bodymenu;
     private Button new_body;
     private VisualElement body_view;
     private VisualElement body_editor;
     private Button body_editor_done;
     private Button body_editor_delete;
-    private VisualElement sidebar;
-    private bool enablesidebar = true;
+    private VisualElement rightsidebar;
+    private VisualElement leftsidebar;
+    private DropdownField TimeScaleUnitsField;
+    private FloatField TimeScaleValueField;
+    private float TimeScaleValue = 1;
+    private float TimeScaleUnits = 1;
+    private bool enablerightsidebar = true;
+    private bool enableleftsidebar = false;
     // Start is called before the first frame update
     void Start()
     {
         controller = FindObjectOfType<SimController>();
         root = GetComponent<UIDocument>().rootVisualElement;
-        open_settings = root.Q<Button>("open-button");
+        open_bodymenu = root.Q<Button>("right-open-button");
+        open_settings = root.Q<Button>("left-open-button");
         new_body = root.Q<Button>("New-Body");
-        sidebar = root.Q<VisualElement>("Sidebar");
+        rightsidebar = root.Q<VisualElement>("RightSidebar");
+        leftsidebar = root.Q<VisualElement>("LeftSidebar");
         viewwindow = root.Q<VisualElement>("View");
         body_view = root.Q<VisualElement>("Body-View");
         body_editor = root.Q<VisualElement>("Body-Editor");
@@ -62,43 +71,84 @@ public class SimulationUI : MonoBehaviour
         massfield = root.Q<FloatField>("Body-Mass");
         pradiusfield = root.Q<FloatField>("Periapsis-Radius");
         pvelocityfield = root.Q<FloatField>("Periapsis-Velocity");
+        TimeScaleUnitsField = root.Q<DropdownField>("TimeScaleUnits");
+        TimeScaleValueField = root.Q<FloatField>("TimeScale");
+        
 
-        open_settings.RegisterCallback<ClickEvent>(ToggleSidebar);
+        open_bodymenu.RegisterCallback<ClickEvent>(ToggleRightSidebar);
+        open_settings.RegisterCallback<ClickEvent>(ToggleLeftSidebar);
         new_body.RegisterCallback<ClickEvent>(CreateBody);
         body_editor_done.RegisterCallback<ClickEvent>(editbodydone);
         body_editor_delete.RegisterCallback<ClickEvent>(editbodydelete);
 
         redslider.RegisterValueChangedCallback(v =>
         {
-            redvalue = v.newValue;
+            redvalue = redslider.value;
         });
         greenslider.RegisterValueChangedCallback(v =>
         {
-            greenvalue = v.newValue;
+            greenvalue = greenslider.value;
         });
         blueslider.RegisterValueChangedCallback(v =>
         {
-            bluevalue = v.newValue;
+            bluevalue = blueslider.value;
         });
         radiusfield.RegisterValueChangedCallback(v =>
         {
-            bodyradius = v.newValue;
+            bodyradius = radiusfield.value;
         });
         massfield.RegisterValueChangedCallback(v =>
         {
-            mass = v.newValue;
+            mass = massfield.value;
             controller.resetsim();
         });
         pradiusfield.RegisterValueChangedCallback(v =>
         {
-            periapsisradius = v.newValue;
+            periapsisradius = pradiusfield.value;
             controller.resetsim();
         });
         pvelocityfield.RegisterValueChangedCallback(v =>
         {
-            periapsisvelocity = v.newValue;
+            periapsisvelocity = pvelocityfield.value;
             controller.resetsim();
         });
+        TimeScaleUnitsField.RegisterValueChangedCallback(v =>
+        {
+            switch(TimeScaleUnitsField.index)
+            {
+                case 0:
+                    TimeScaleUnits = 1;
+                    print("case0: 1");
+                    break;
+                case 1:
+                    TimeScaleUnits = 60;
+                    print("case1: 60");
+                    break;
+                case 2:
+                    TimeScaleUnits = 3600;
+                    print("case2: 3600");
+                    break;
+                case 3:
+                    TimeScaleUnits = 86400;
+                    print("case3: 86400");
+                    break;
+                case 4:
+                    TimeScaleUnits = 31557600;
+                    print("case4: 31557600");
+                    break;
+                default:
+                    TimeScaleUnits = 1;
+                    print("case default: 1");
+                    break;
+            }
+            controller.TimeScale = TimeScaleValue*TimeScaleUnits;
+        });
+        TimeScaleValueField.RegisterValueChangedCallback(v =>
+        {
+            TimeScaleValue = TimeScaleValueField.value;
+            controller.TimeScale = TimeScaleValue*TimeScaleUnits;
+        });
+
     }
 
     private void editbodydone(ClickEvent evt)
@@ -147,21 +197,39 @@ public class SimulationUI : MonoBehaviour
         controller.resetsim();
     }
 
-    private void ToggleSidebar(ClickEvent evt)
+    private void ToggleRightSidebar(ClickEvent evt)
     {
-        if(enablesidebar)
+        if(enablerightsidebar)
         {
-            enablesidebar = false;
-            sidebar.RemoveFromClassList("sidebar-open");
-            sidebar.AddToClassList("sidebar-closed");
-            open_settings.text = "<";
+            enablerightsidebar = false;
+            rightsidebar.RemoveFromClassList("right-sidebar-open");
+            rightsidebar.AddToClassList("right-sidebar-closed");
+            open_bodymenu.text = "<";
         }
         else
         {
-            enablesidebar = true;
-            sidebar.RemoveFromClassList("sidebar-closed");
-            sidebar.AddToClassList("sidebar-open");
+            enablerightsidebar = true;
+            rightsidebar.RemoveFromClassList("right-sidebar-closed");
+            rightsidebar.AddToClassList("right-sidebar-open");
+            open_bodymenu.text = ">";
+        }
+    }
+
+    private void ToggleLeftSidebar(ClickEvent evt)
+    {
+        if(enableleftsidebar)
+        {
+            enableleftsidebar = false;
+            leftsidebar.RemoveFromClassList("left-sidebar-open");
+            leftsidebar.AddToClassList("left-sidebar-closed");
             open_settings.text = ">";
+        }
+        else
+        {
+            enableleftsidebar = true;
+            leftsidebar.RemoveFromClassList("left-sidebar-closed");
+            leftsidebar.AddToClassList("left-sidebar-open");
+            open_settings.text = "<";
         }
     }
 
