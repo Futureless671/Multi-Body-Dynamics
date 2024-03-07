@@ -195,10 +195,8 @@ public class Body : MonoBehaviour
             T = orbit.T/86400;
             a = orbit.a;
         }
-        trail.widthMultiplier = BodyScale;
-        trail.time = orbit.T*0.75f/controller.TimeScale;
-        trail.enabled = true;
         trail.Clear();
+        trail.enabled = true;
     }
 
     void Awake()
@@ -230,6 +228,8 @@ public class Body : MonoBehaviour
 
     void Update()
     {
+        trail.widthMultiplier = BodyScale;
+        trail.time = 0.75f*orbit.T/controller.TimeScale;
         accumtime += Time.fixedDeltaTime;
         int desiredfps = 10;
         if(1/accumtime<=desiredfps)

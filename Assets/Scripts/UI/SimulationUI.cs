@@ -48,6 +48,11 @@ public class SimulationUI : MonoBehaviour
     private float TimeScaleUnits = 1;
     private bool enablerightsidebar = true;
     private bool enableleftsidebar = false;
+    private float BodyScalePower = 1;
+    private Slider BodyScalePowerSlider;
+    private float BodyScaleMin = 0.1f;
+    private Slider BodyScaleMinSlider;
+    private List<VisualElement> BodyScalePlotPoints = new List<VisualElement>();
     // Start is called before the first frame update
     void Start()
     {
@@ -73,7 +78,13 @@ public class SimulationUI : MonoBehaviour
         pvelocityfield = root.Q<FloatField>("Periapsis-Velocity");
         TimeScaleUnitsField = root.Q<DropdownField>("TimeScaleUnits");
         TimeScaleValueField = root.Q<FloatField>("TimeScale");
+        BodyScalePowerSlider = root.Q<Slider>("BodyScalePowerSlider");
+        BodyScaleMinSlider = root.Q<Slider>("MinSizeSlider");
         
+        for(int i = 1; i<=32; i++)
+        {
+            BodyScalePlotPoints.Add(root.Q<VisualElement>("Point"+i));
+        }
 
         open_bodymenu.RegisterCallback<ClickEvent>(ToggleRightSidebar);
         open_settings.RegisterCallback<ClickEvent>(ToggleLeftSidebar);
@@ -148,7 +159,36 @@ public class SimulationUI : MonoBehaviour
             TimeScaleValue = TimeScaleValueField.value;
             controller.TimeScale = TimeScaleValue*TimeScaleUnits;
         });
+        BodyScalePowerSlider.RegisterValueChangedCallback(v =>
+        {
+            BodyScalePower = BodyScalePowerSlider.value;
+            plotbodyscale();
+        });
+        BodyScaleMinSlider.RegisterValueChangedCallback(v =>
+        {
+            BodyScaleMin = BodyScaleMinSlider.value;
+            plotbodyscale();
+        });
+        plotbodyscale();
 
+    }
+
+    private void plotbodyscale()
+    {
+        float index = 1;
+        foreach(VisualElement i in BodyScalePlotPoints)
+        {
+            float x = 1f/(BodyScalePlotPoints.Count-1f)*(index-1f);
+            print(x);
+            float y = (Mathf.Pow(x,BodyScalePower)*(1-BodyScaleMin) + BodyScaleMin)*230f;
+            i.style.bottom = y;
+            index++;
+        }
+        float m = controller.PrimaryBody.radius;
+        foreach(Body i in controller.Bodies)
+        {
+            i.BodyScale = (Mathf.Pow(m*i.radius,BodyScalePower)/Mathf.Pow(m,2*BodyScalePower))*(1-BodyScaleMin) + BodyScaleMin;
+        }
     }
 
     private void editbodydone(ClickEvent evt)
