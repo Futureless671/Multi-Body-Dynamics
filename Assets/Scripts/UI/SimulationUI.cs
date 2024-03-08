@@ -48,11 +48,13 @@ public class SimulationUI : MonoBehaviour
     private float TimeScaleUnits = 1;
     private bool enablerightsidebar = true;
     private bool enableleftsidebar = false;
-    private float BodyScalePower = 1;
+    private float BodyScalePower = 1f;
     private Slider BodyScalePowerSlider;
     private float BodyScaleMin = 0.1f;
     private Slider BodyScaleMinSlider;
     private List<VisualElement> BodyScalePlotPoints = new List<VisualElement>();
+    private VisualElement plot;
+    private int plotwidth;
     // Start is called before the first frame update
     void Start()
     {
@@ -80,11 +82,24 @@ public class SimulationUI : MonoBehaviour
         TimeScaleValueField = root.Q<FloatField>("TimeScale");
         BodyScalePowerSlider = root.Q<Slider>("BodyScalePowerSlider");
         BodyScaleMinSlider = root.Q<Slider>("MinSizeSlider");
+        plot = root.Q<VisualElement>("PlotView");
+
+        plotwidth = 256;
         
-        for(int i = 1; i<=32; i++)
+        for(int i = 0; i<=plotwidth; i++)
         {
-            BodyScalePlotPoints.Add(root.Q<VisualElement>("Point"+i));
+            VisualElement pltpnt = new VisualElement();
+            pltpnt.name = "PlotPoint"+i;
+            pltpnt.AddToClassList("BodyScalePlotPoint");
+            plot.Add(pltpnt);
+            BodyScalePlotPoints.Add(pltpnt);
+            float ht = 4;
+            float wd = 4;
+            pltpnt.style.position = Position.Absolute;
+            pltpnt.style.bottom = -ht/2;
+            pltpnt.style.left = i - wd/2;
         }
+        print(BodyScalePlotPoints.Count);
 
         open_bodymenu.RegisterCallback<ClickEvent>(ToggleRightSidebar);
         open_settings.RegisterCallback<ClickEvent>(ToggleLeftSidebar);
@@ -161,7 +176,7 @@ public class SimulationUI : MonoBehaviour
         });
         BodyScalePowerSlider.RegisterValueChangedCallback(v =>
         {
-            BodyScalePower = BodyScalePowerSlider.value;
+            BodyScalePower = Mathf.Pow(10,2*BodyScalePowerSlider.value-1);
             plotbodyscale();
         });
         BodyScaleMinSlider.RegisterValueChangedCallback(v =>
@@ -175,13 +190,13 @@ public class SimulationUI : MonoBehaviour
 
     private void plotbodyscale()
     {
-        float index = 1;
+        float index = 0;
         foreach(VisualElement i in BodyScalePlotPoints)
         {
-            float x = 1f/(BodyScalePlotPoints.Count-1f)*(index-1f);
+            float x = index/256;
             print(x);
-            float y = (Mathf.Pow(x,BodyScalePower)*(1-BodyScaleMin) + BodyScaleMin)*230f;
-            i.style.bottom = y;
+            float y = (Mathf.Pow(x,BodyScalePower)*(1-BodyScaleMin) + BodyScaleMin)*256f;
+            i.style.bottom = y - 2;
             index++;
         }
         float m = controller.PrimaryBody.radius;
