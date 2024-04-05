@@ -232,3 +232,8 @@
     border-bottom-right-radius: 2px;
     border-bottom-left-radius: 2px;
 }
+
+.vert-txt {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}

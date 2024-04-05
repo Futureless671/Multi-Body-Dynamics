@@ -14,7 +14,7 @@ public class SimController : MonoBehaviour
     public float BodyScale = 1;
     public float TimeScale;
     public Body PrimaryBody;
-    public float UGC = 6.674f*Mathf.Pow(10,-11);
+    public float UGC = 6.6743f*Mathf.Pow(10,-19);
     public float time;
     public bool play;
     public Body InertialFoR;

@@ -53,7 +53,7 @@ public class SimulationUI : MonoBehaviour
     private float BodyScaleMin = 0.1f;
     private Slider BodyScaleMinSlider;
     private List<VisualElement> BodyScalePlotPoints = new List<VisualElement>();
-    private VisualElement plot;
+    private VisualElement bodyscaleplot;
     private int plotwidth;
     // Start is called before the first frame update
     void Start()
@@ -82,7 +82,7 @@ public class SimulationUI : MonoBehaviour
         TimeScaleValueField = root.Q<FloatField>("TimeScale");
         BodyScalePowerSlider = root.Q<Slider>("BodyScalePowerSlider");
         BodyScaleMinSlider = root.Q<Slider>("MinSizeSlider");
-        plot = root.Q<VisualElement>("PlotView");
+        bodyscaleplot = root.Q<VisualElement>("PlotView");
 
         plotwidth = 256;
         
@@ -91,7 +91,7 @@ public class SimulationUI : MonoBehaviour
             VisualElement pltpnt = new VisualElement();
             pltpnt.name = "PlotPoint"+i;
             pltpnt.AddToClassList("BodyScalePlotPoint");
-            plot.Add(pltpnt);
+            bodyscaleplot.Add(pltpnt);
             BodyScalePlotPoints.Add(pltpnt);
             float ht = 4;
             float wd = 4;
@@ -99,7 +99,6 @@ public class SimulationUI : MonoBehaviour
             pltpnt.style.bottom = -ht/2;
             pltpnt.style.left = i - wd/2;
         }
-        print(BodyScalePlotPoints.Count);
 
         open_bodymenu.RegisterCallback<ClickEvent>(ToggleRightSidebar);
         open_settings.RegisterCallback<ClickEvent>(ToggleLeftSidebar);
@@ -109,33 +108,33 @@ public class SimulationUI : MonoBehaviour
 
         redslider.RegisterValueChangedCallback(v =>
         {
-            redvalue = redslider.value;
+            redvalue = v.newValue;
         });
         greenslider.RegisterValueChangedCallback(v =>
         {
-            greenvalue = greenslider.value;
+            greenvalue = v.newValue;
         });
         blueslider.RegisterValueChangedCallback(v =>
         {
-            bluevalue = blueslider.value;
+            bluevalue = v.newValue;
         });
         radiusfield.RegisterValueChangedCallback(v =>
         {
-            bodyradius = radiusfield.value;
+            bodyradius = v.newValue;
         });
         massfield.RegisterValueChangedCallback(v =>
         {
-            mass = massfield.value;
+            mass = v.newValue;
             controller.resetsim();
         });
         pradiusfield.RegisterValueChangedCallback(v =>
         {
-            periapsisradius = pradiusfield.value;
+            periapsisradius = v.newValue;
             controller.resetsim();
         });
         pvelocityfield.RegisterValueChangedCallback(v =>
         {
-            periapsisvelocity = pvelocityfield.value;
+            periapsisvelocity = v.newValue;
             controller.resetsim();
         });
         TimeScaleUnitsField.RegisterValueChangedCallback(v =>
@@ -144,44 +143,38 @@ public class SimulationUI : MonoBehaviour
             {
                 case 0:
                     TimeScaleUnits = 1;
-                    print("case0: 1");
                     break;
                 case 1:
                     TimeScaleUnits = 60;
-                    print("case1: 60");
                     break;
                 case 2:
                     TimeScaleUnits = 3600;
-                    print("case2: 3600");
                     break;
                 case 3:
                     TimeScaleUnits = 86400;
-                    print("case3: 86400");
                     break;
                 case 4:
                     TimeScaleUnits = 31557600;
-                    print("case4: 31557600");
                     break;
                 default:
                     TimeScaleUnits = 1;
-                    print("case default: 1");
                     break;
             }
             controller.TimeScale = TimeScaleValue*TimeScaleUnits;
         });
         TimeScaleValueField.RegisterValueChangedCallback(v =>
         {
-            TimeScaleValue = TimeScaleValueField.value;
+            TimeScaleValue = v.newValue;
             controller.TimeScale = TimeScaleValue*TimeScaleUnits;
         });
         BodyScalePowerSlider.RegisterValueChangedCallback(v =>
         {
-            BodyScalePower = Mathf.Pow(10,2*BodyScalePowerSlider.value-1);
+            BodyScalePower = Mathf.Pow(10,2*v.newValue-1);
             plotbodyscale();
         });
         BodyScaleMinSlider.RegisterValueChangedCallback(v =>
         {
-            BodyScaleMin = BodyScaleMinSlider.value;
+            BodyScaleMin = v.newValue;
             plotbodyscale();
         });
         plotbodyscale();
@@ -194,7 +187,6 @@ public class SimulationUI : MonoBehaviour
         foreach(VisualElement i in BodyScalePlotPoints)
         {
             float x = index/256;
-            print(x);
             float y = (Mathf.Pow(x,BodyScalePower)*(1-BodyScaleMin) + BodyScaleMin)*256f;
             i.style.bottom = y - 2;
             index++;
@@ -202,7 +194,7 @@ public class SimulationUI : MonoBehaviour
         float m = controller.PrimaryBody.radius;
         foreach(Body i in controller.Bodies)
         {
-            i.BodyScale = (Mathf.Pow(m*i.radius,BodyScalePower)/Mathf.Pow(m,2*BodyScalePower))*(1-BodyScaleMin) + BodyScaleMin;
+            i.BodyScale = Mathf.Pow(m*i.radius,BodyScalePower)/Mathf.Pow(m,2*BodyScalePower)*(1-BodyScaleMin) + BodyScaleMin;
         }
     }
 
@@ -295,10 +287,10 @@ public class SimulationUI : MonoBehaviour
         redslider.value = editorbody.color.r*255;
         greenslider.value = editorbody.color.g*255;
         blueslider.value = editorbody.color.b*255;
-        radiusfield.value = editorbody.radius/1000;
+        radiusfield.value = editorbody.radius;
         massfield.value = editorbody.mass;
-        pradiusfield.value = editorbody.r_i/1000;
-        pvelocityfield.value = editorbody.v_i/1000;
+        pradiusfield.value = editorbody.r_i;
+        pvelocityfield.value = editorbody.v_i;
         editoractive = true;
         body_view.style.display = DisplayStyle.None;
         body_editor.style.display = DisplayStyle.Flex;
@@ -313,10 +305,10 @@ public class SimulationUI : MonoBehaviour
             editorbody.name = namefield.value;
             color = new Color(redvalue/255, greenvalue/255, bluevalue/255, 1f);
             editorbody.color = color;
-            editorbody.radius = bodyradius*1000;
+            editorbody.radius = bodyradius;
             editorbody.mass = mass;
-            editorbody.r_i = periapsisradius*1000;
-            editorbody.v_i = periapsisvelocity*1000;
+            editorbody.r_i = periapsisradius;
+            editorbody.v_i = periapsisvelocity;
         }
     }
 }
