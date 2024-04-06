@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class SimulationUI : MonoBehaviour
@@ -54,7 +52,14 @@ public class SimulationUI : MonoBehaviour
     private Slider BodyScaleMinSlider;
     private List<VisualElement> BodyScalePlotPoints = new List<VisualElement>();
     private VisualElement bodyscaleplot;
+    private DropdownField OrbitScalingTypeField;
+    private Slider LinScale;
+    private Slider LinOffset;
+    private Slider LogScale;
+    private Slider LogOffset;
+    private Slider LogAbsOffset;
     private int plotwidth;
+    private Button Exittomenu;
     // Start is called before the first frame update
     void Start()
     {
@@ -83,6 +88,15 @@ public class SimulationUI : MonoBehaviour
         BodyScalePowerSlider = root.Q<Slider>("BodyScalePowerSlider");
         BodyScaleMinSlider = root.Q<Slider>("MinSizeSlider");
         bodyscaleplot = root.Q<VisualElement>("PlotView");
+        OrbitScalingTypeField = root.Q<DropdownField>("ScalingType");
+        LinScale = root.Q<Slider>("LinearScaleFactor");
+        LinOffset = root.Q<Slider>("LinearOffset");
+        LogScale = root.Q<Slider>("LogScaleFactor");
+        LogOffset = root.Q<Slider>("LogOffset");
+        LogAbsOffset = root.Q<Slider>("LogAbsOffset");
+        Exittomenu = root.Q<Button>("ExitButton");
+
+        Exittomenu.RegisterCallback<ClickEvent>(ExitToMenu);
 
         plotwidth = 256;
         
@@ -177,8 +191,57 @@ public class SimulationUI : MonoBehaviour
             BodyScaleMin = v.newValue;
             plotbodyscale();
         });
+        OrbitScalingTypeField.RegisterValueChangedCallback(v =>
+        {
+            switch(OrbitScalingTypeField.index)
+            {
+                case 0:
+                    controller.ScalingType = "Linear";
+                    root.Q<VisualElement>("LinearScaling").style.display = DisplayStyle.Flex;
+                    root.Q<VisualElement>("LogScaling").style.display = DisplayStyle.None;
+                    controller.autoscale();
+                    break;
+                case 1:
+                    controller.ScalingType = "Logarithmic";
+                    root.Q<VisualElement>("LinearScaling").style.display = DisplayStyle.None;
+                    root.Q<VisualElement>("LogScaling").style.display = DisplayStyle.Flex;
+                    controller.autoscale();
+                    break;
+                default:
+                    controller.ScalingType = "Linear";
+                    root.Q<VisualElement>("LinearScaling").style.display = DisplayStyle.Flex;
+                    root.Q<VisualElement>("LogScaling").style.display = DisplayStyle.None;
+                    controller.autoscale();
+                    break;
+            }
+        });
+        LinScale.RegisterValueChangedCallback(v =>
+        {
+            controller.LinScaleFactor = v.newValue;
+        });
+        LinOffset.RegisterValueChangedCallback(v => 
+        {
+            controller.LinOffset = v.newValue;
+        });
+        LogScale.RegisterValueChangedCallback(v =>
+        {
+            controller.LogScaleFactor = v.newValue;
+        });
+        LogOffset.RegisterValueChangedCallback(v =>
+        {
+            controller.LogOffset = v.newValue;
+        });
+        LogAbsOffset.RegisterValueChangedCallback(v =>
+        {
+            controller.LogAbsOffset = v.newValue*controller.LinScaleFactor;
+        });
         plotbodyscale();
 
+    }
+
+    private void ExitToMenu(ClickEvent evt)
+    {
+        SceneManager.LoadScene(sceneName: "Main Menu");
     }
 
     private void plotbodyscale()
@@ -191,7 +254,15 @@ public class SimulationUI : MonoBehaviour
             i.style.bottom = y - 2;
             index++;
         }
-        float m = controller.PrimaryBody.radius;
+        float m;
+        if(controller.PrimaryBody!=null)
+        {
+            m = controller.PrimaryBody.radius;
+        }
+        else
+        {
+            m = 1;
+        }
         foreach(Body i in controller.Bodies)
         {
             i.BodyScale = Mathf.Pow(m*i.radius,BodyScalePower)/Mathf.Pow(m,2*BodyScalePower)*(1-BodyScaleMin) + BodyScaleMin;
@@ -294,6 +365,16 @@ public class SimulationUI : MonoBehaviour
         editoractive = true;
         body_view.style.display = DisplayStyle.None;
         body_editor.style.display = DisplayStyle.Flex;
+    }
+
+    public void SyncScales()
+    {
+        LinScale.value = controller.LinScaleFactor;
+        LinScale.highValue = controller.LinScaleFactor;
+        LinScale.lowValue = 0;
+        LinOffset.value = controller.LinOffset;
+        LogScale.value = controller.LogScaleFactor;
+        LogOffset.value = controller.LogOffset;
     }
 
     // Update is called once per frame

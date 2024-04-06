@@ -52,6 +52,7 @@ public class Body : MonoBehaviour
     public Vector3 v;
     public float T;
     public float a;
+    public float mu;
 
     struct OrbitalConstants
     {
@@ -71,7 +72,7 @@ public class Body : MonoBehaviour
     OrbitalConstants CalcParams(float r, float v)
     {
         OrbitalConstants orbit = new OrbitalConstants();
-        orbit.mu = controller.UGC*(PrimaryBody.mass+mass);
+        orbit.mu = 6.6743f*Mathf.Pow(10,-20)*(PrimaryBody.mass+mass);
         orbit.alpha = 2/r - v*v/orbit.mu;
         orbit.a = 1/orbit.alpha;
         orbit.h = r*v;
@@ -115,20 +116,6 @@ public class Body : MonoBehaviour
             S = 1/6;
         }
         return S;
-    }
-
-    float dSdy(float y)
-    {
-        float dSdy;
-        dSdy = (Cfunction(y) - 3*Sfunction(y))/(2*y);
-        return dSdy;
-    }
-
-    float dCdy(float y)
-    {
-        float dCdy;
-        dCdy = (1 - y*Sfunction(y) - 2*Cfunction(y))/(2*y);
-        return dCdy;
     }
 
     float F(float x, float r, float dt)
@@ -194,9 +181,10 @@ public class Body : MonoBehaviour
             orbit = CalcParams(r_i,v_i); // Calculate orbit parameters
             T = orbit.T/86400;
             a = orbit.a;
+            mu = orbit.mu;
         }
-        trail.Clear();
         trail.enabled = true;
+        trail.Clear();
     }
 
     void Awake()
@@ -247,7 +235,18 @@ public class Body : MonoBehaviour
         {
             transform.localScale = new Vector3(1,1,1)*BodyScale;
             x = Newton(controller.time);
-            transform.position = CalcPosition(x, r_i, v_i, controller.time)*controller.ScaleFactor;
+            if(r_i==0)
+            {
+                transform.position = new Vector3(0,0,0);
+            }
+            else if(v_i==0)
+            {
+                transform.position = controller.scaleposition(new Vector3(r_i,0,0));
+            }
+            else
+            {
+                transform.position = controller.scaleposition(CalcPosition(x, r_i, v_i, controller.time));
+            }
         }
         else
         {
